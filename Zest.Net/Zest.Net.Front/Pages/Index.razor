@@ -1,7 +1,18 @@
 ﻿@page "/"
+@inject Zest.Net.Front.Services.ZestClient ZestClient
 
 <h1>Zest.NET</h1>
 
 Welcome to Zest.NET Blazor WebAssembly application. This is a work in progress.
 
-<SurveyPrompt Title="Work in progres... Please come back in a few days to see the magic !"/>
+<SurveyPrompt Title="Work in progres... Please come back in a few days to see the magic !" />
+
+@code {
+    private object[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ZestClient.GetAsync("users");
+        Console.WriteLine(forecasts);
+    }
+}
