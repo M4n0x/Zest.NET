@@ -24,6 +24,10 @@ footer {
     color: #fff;
 }
 
+footer p {
+    margin-bottom: 0;
+}
+
 .top-row {
     background: linear-gradient(90deg, var(--primary) 0%, var(--primary-darken) 70%);
     border-bottom: 1px solid #d6d5d5;
