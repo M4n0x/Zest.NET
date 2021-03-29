@@ -1,5 +1,13 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+:root {
+    --primary: #3f612d;
+    --primary-darken: #314f22;
+    --secondary: #f8f0c9;
+    --accent: #efd76c;
+    --error: #b71c1c;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
