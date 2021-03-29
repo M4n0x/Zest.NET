@@ -11,10 +11,12 @@
 
 .text-danger {
     color: var(--error);
+    width: auto !important;
 }
 
 .text-yellow {
     color: var(--secondary);
+    width: auto !important;
 }
 
 .title-logo {
