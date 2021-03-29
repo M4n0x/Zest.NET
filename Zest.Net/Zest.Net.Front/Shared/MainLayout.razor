@@ -10,8 +10,14 @@
             <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
         </div>
 
-        <div class="content px-4">
+        <div id="body" class="content px-4">
             @Body
         </div>
+        <footer>
+            Made with <span class="oi oi-heart text-danger" aria-hidden="true"></span>
+            during all the <span class="oi oi-moon text-yellow" aria-hidden="true"></span>
+            by Danz, Fridez & Mendes Reis 
+            Zest.Net v@(Assembly.GetExecutingAssembly().GetName().Version.ToString())
+        </footer>
     </div>
 </div>

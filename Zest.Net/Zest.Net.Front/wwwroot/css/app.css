@@ -9,6 +9,14 @@
     --error: #b71c1c;
 }
 
+.text-danger {
+    color: var(--error);
+}
+
+.text-yellow {
+    color: var(--secondary);
+}
+
 .title-logo {
     display: flex;
     align-items: center;

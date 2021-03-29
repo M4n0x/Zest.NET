@@ -6,10 +6,22 @@
 
 .main {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar {
     background-image: linear-gradient(180deg, var(--primary) 0%, var(--primary-darken) 70%);
+}
+
+#body {
+    flex-grow: 1;
+}
+
+footer {
+    background-color: var(--primary-darken);
+    padding: 10px 1.5rem 10px 2rem;
+    color: #fff;
 }
 
 .top-row {
