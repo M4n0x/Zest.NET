@@ -1,4 +1,5 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url(https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap);
 
 :root {
     --primary: #3f612d;
@@ -6,6 +7,20 @@
     --secondary: #f8f0c9;
     --accent: #efd76c;
     --error: #b71c1c;
+}
+
+.title-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 100%;
+}
+
+.nav-title {
+    font-family: "Baloo 2", sans-serif;
+    font-weight: 600;
+    font-size: 1.8rem;
+    margin-left: 6px;
 }
 
 html, body {

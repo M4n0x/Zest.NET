@@ -2,10 +2,15 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+.zest-logo {
+    height: 32px;
+}
+
 .top-row {
     height: 3.5rem;
     background-color: var(--primary);
     border-right: 1px solid var(--primary-darken);
+    border-bottom: 1px solid var(--primary-darken);
 }
 
 .navbar-brand {
