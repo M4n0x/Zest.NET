@@ -9,6 +9,16 @@
     --error: #b71c1c;
 }
 
+.text-danger {
+    color: var(--error);
+    width: auto !important;
+}
+
+.text-yellow {
+    color: var(--secondary);
+    width: auto !important;
+}
+
 .title-logo {
     display: flex;
     align-items: center;
@@ -51,6 +61,10 @@ a, .btn-link {
 
 .validation-message {
     color: red;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Baloo 2", sans-serif;
 }
 
 #blazor-error-ui {
