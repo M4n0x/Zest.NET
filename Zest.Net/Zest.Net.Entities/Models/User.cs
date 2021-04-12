@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 using Zest.Net.Entities.Attributes;
-using Zest.Net.Entities.Interfaces;
 
 namespace Zest.Net.Entities.Models
 {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Zest.Net.Entities.Models
+﻿namespace Zest.Net.Entities.Models
 {
     /// <summary>
     /// Token response class
