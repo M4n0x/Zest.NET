@@ -20,8 +20,9 @@ namespace Zest.Net.Entities.Interfaces
         /// <summary>
         /// Get Entity by id
         /// </summary>
+        /// <param name="id">Entity id</param>
         /// <returns>entity with given id</returns>
-        Task<TEntity> GetById();
+        Task<TEntity> GetById(int id);
 
         /// <summary>
         /// Insert an entity in database
