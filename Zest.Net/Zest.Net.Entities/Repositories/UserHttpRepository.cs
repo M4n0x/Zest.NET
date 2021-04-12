@@ -8,19 +8,11 @@ using Zest.Net.Entities.Models;
 
 namespace Zest.Net.Entities.Repositories
 {
-    public class UserHttpRepository : IGenericHttpRepository<User>
+    public class UserHttpRepository : GenericHttpRepository<User>
     {
-        private readonly ZestClient _client;
-
-        public UserHttpRepository(ZestClient client)
+        public UserHttpRepository(ZestClient client) : base(client)
         {
-            _client = client;
-        }
 
-        public async Task<IEnumerable<User>> Get()
-        {
-            Console.WriteLine(_client.Token);
-            return await _client.Get<User>("users");
         }
     }
 }
