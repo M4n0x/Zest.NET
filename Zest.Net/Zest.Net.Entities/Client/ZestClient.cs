@@ -49,9 +49,34 @@ namespace Zest.Net.Entities.Client
             return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
         }
 
+        private async Task<TResponse> Request<TResponse>(string url, HttpMethod method)
+        {
+            return await Request<TResponse, object>(url, method, null);
+        }
+
         public async Task<IEnumerable<TEntity>> Get<TEntity>(string url)
         {
             return await Request<IEnumerable<TEntity>, object>(url, HttpMethod.Get);
+        }
+
+        public async Task<TEntity> GetById<TEntity>(string url, int id)
+        {
+            return await Request<TEntity>($"{url}/{id}", HttpMethod.Get);
+        }
+
+        public async Task Insert<TEntity>(string url, TEntity data)
+        {
+            await Request<object, object>(url, HttpMethod.Post, data);
+        }
+
+        public async Task Update<TEntity>(string url, int id, TEntity data)
+        {
+            await Request<object, object>($"{url}/{id}", HttpMethod.Post, data);
+        }
+
+        public async Task Delete<TEntity>(string url, int id)
+        {
+            await Request<object, object>($"{url}/{id}", HttpMethod.Post);
         }
     }
 }
