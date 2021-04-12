@@ -14,8 +14,16 @@ using Zest.Net.Entities.Repositories;
 
 namespace Zest.Net.Front
 {
+    /// <summary>
+    /// Zest.NET Web Assembly program
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Entry point
+        /// </summary>
+        /// <param name="args">Zest.NET arguments</param>
+        /// <returns>Program</returns>
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);

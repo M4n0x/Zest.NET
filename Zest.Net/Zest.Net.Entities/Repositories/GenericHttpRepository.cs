@@ -10,6 +10,7 @@ using Zest.Net.Entities.Models;
 
 namespace Zest.Net.Entities.Repositories
 {
+
     public class GenericHttpRepository<TEntity> : IGenericHttpRepository<TEntity> where TEntity : class
     {
         private readonly ZestClient _client;
