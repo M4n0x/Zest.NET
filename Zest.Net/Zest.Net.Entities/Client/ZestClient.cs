@@ -6,24 +6,24 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using Zest.Net.Front.Model;
+using Zest.Net.Entities.Models;
 
-namespace Zest.Net.Front.Client
+namespace Zest.Net.Entities.Client
 {
     public class ZestClient
     {
-        private readonly HttpClient http;
+        public readonly HttpClient Http;
 
-        private string Token { get; set; }
+        public string Token { get; set; }
 
         public ZestClient(HttpClient http)
         {
-            this.http = http;
+            this.Http = http;
         }
 
         public async Task Login(string username, string password)
         {
-            var response = await http.PostAsJsonAsync("auth/token/", new
+            var response = await Http.PostAsJsonAsync("auth/token/", new
             {
                 username = username,
                 password = password
@@ -31,12 +31,11 @@ namespace Zest.Net.Front.Client
 
             var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
             Token = deserializedData.Access;
-            Console.WriteLine(Token);
         }
 
         private async Task<TResponse> Request<TResponse, TBody>(string url, HttpMethod method, TBody body = null) where TBody : class
         {
-            var request = new HttpRequestMessage(method, $"{http.BaseAddress}{url}");
+            var request = new HttpRequestMessage(method, $"{Http.BaseAddress}{url}");
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
@@ -45,7 +44,7 @@ namespace Zest.Net.Front.Client
                 request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
             }
 
-            using var httpResponse = await http.SendAsync(request);
+            using var httpResponse = await Http.SendAsync(request);
 
             return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
         }

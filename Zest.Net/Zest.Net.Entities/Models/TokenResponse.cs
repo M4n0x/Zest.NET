@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Zest.Net.Front.Model
+namespace Zest.Net.Entities.Models
 {
     public class TokenResponse
     {
