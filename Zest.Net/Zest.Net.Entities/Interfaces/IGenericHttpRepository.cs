@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Zest.Net.Entities.Interfaces
 {
-    public interface IGenericHttpRepository<TEntity>
+    public interface IGenericHttpRepository<TEntity> where TEntity : IBaseModel
     {
         Task<IEnumerable<TEntity>> Get();
         Task<TEntity> GetById();

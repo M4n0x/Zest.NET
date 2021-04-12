@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Zest.Net.Entities.Interfaces;
 
 namespace Zest.Net.Entities.Models
 {
     /// <summary>
     /// User data class
     /// </summary>
-    public class User
+    public class User : IBaseModel
     {
         /// <summary>
         /// User Id
@@ -47,5 +48,7 @@ namespace Zest.Net.Entities.Models
         /// User Username
         /// </summary>
         public string Username { get; set; }
+
+        public string ApiPath => "users";
     }
 }
