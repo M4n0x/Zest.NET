@@ -4,7 +4,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Zest.Net.Entities.Client;
 using Zest.Net.Entities.Interfaces;
-using Zest.Net.Entities.Extensions;
 using Zest.Net.Entities.Attributes;
 using System.Reflection;
 using Zest.Net.Entities.Models;
