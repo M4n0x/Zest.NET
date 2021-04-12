@@ -1,7 +1,21 @@
-﻿@page "/"
+﻿@inject ZestClient Http  
+@page "/"
 
 <h1>Zest.NET</h1>
 
 Welcome to Zest.NET Blazor WebAssembly application. This is a work in progress.
 
-<SurveyPrompt Title="Work in progres... Please come back in a few days to see the magic !"/>
+<SurveyPrompt Title="Work in progres... Please come back in a few days to see the magic !" />
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await Http.Login("lucas", "123123");
+        var users = await Http.Get<User>("users");
+
+        foreach(var user in users)
+        {
+            Console.WriteLine(user.Firstname);
+        }
+    }
+}

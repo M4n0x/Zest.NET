@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Zest.Net.Front.Client;
 
 namespace Zest.Net.Front
 {
@@ -17,8 +18,7 @@ namespace Zest.Net.Front
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            builder.Services.AddHttpClient<ZestClient>(client => client.BaseAddress = new Uri("https://zest.srvz-webapp.he-arc.ch/api/"));
             await builder.Build().RunAsync();
         }
     }
