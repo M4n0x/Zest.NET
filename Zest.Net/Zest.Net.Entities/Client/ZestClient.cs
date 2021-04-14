@@ -45,6 +45,20 @@ namespace Zest.Net.Entities.Client
             Token = deserializedData.Access;
         }
 
+        public async Task Register(string username, string firstname, string lastname, string email, string password)
+        {
+            var response = await Http.PostAsJsonAsync("auth/token/", new
+            {
+                username = username,
+                password = password
+            });
+
+            // TODO !
+
+            var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
+            Token = deserializedData.Access;
+        }
+
         /// <summary>
         /// Method to wrap all API request the same way
         /// </summary>

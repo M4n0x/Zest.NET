@@ -22,7 +22,7 @@ namespace Zest.Net.Entities.Repositories
         /// <summary>
         /// Api path for used entity (TEntity)
         /// </summary>
-        public string ApiPath => typeof(TEntity).GetCustomAttribute<ApiPathAttribute>().Path;
+        public virtual string ApiPath => typeof(TEntity).GetCustomAttribute<ApiPathAttribute>().Path;
 
         /// <summary>
         /// Generic Repository constructor
