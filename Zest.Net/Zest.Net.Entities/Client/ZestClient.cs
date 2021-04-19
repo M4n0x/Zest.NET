@@ -47,11 +47,8 @@ namespace Zest.Net.Entities.Client
 
         public async Task Register(string username, string firstname, string lastname, string email, string password)
         {
-            var response = await Http.PostAsJsonAsync("auth/token/", new
-            {
-                username = username,
-                password = password
-            });
+            User newUser = new User(username, firstname, lastname, email, password);
+            var response = await Http.PostAsJsonAsync("users", newUser);
 
             // TODO !
 

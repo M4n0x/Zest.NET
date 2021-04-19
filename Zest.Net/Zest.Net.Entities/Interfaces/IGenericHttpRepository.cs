@@ -38,13 +38,6 @@ namespace Zest.Net.Entities.Interfaces
         Task Update(int id, TEntity entity);
 
         /// <summary>
-        /// Delete an Entity
-        /// </summary>
-        /// <param name="entity">Entity to delete</param>
-        /// <returns>Task</returns>
-        Task Delete(TEntity entity);
-
-        /// <summary>
         /// Delete an entity with given id
         /// </summary>
         /// <param name="id">Entity id</param>

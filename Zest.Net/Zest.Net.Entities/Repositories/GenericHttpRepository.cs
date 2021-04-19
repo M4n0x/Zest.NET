@@ -57,9 +57,9 @@ namespace Zest.Net.Entities.Repositories
         /// </summary>
         /// <param name="entity">entity to insert</param>
         /// <returns>Api response</returns>
-        public Task Insert(TEntity entity)
+        public async Task Insert(TEntity entity)
         {
-            throw new NotImplementedException();
+            await _client.Insert(ApiPath, entity);
         }
 
         /// <summary>
@@ -68,19 +68,9 @@ namespace Zest.Net.Entities.Repositories
         /// <param name="id">Entity id to update</param>
         /// <param name="entity">Entity data</param>
         /// <returns>Api response</returns>
-        public Task Update(int id, TEntity entity)
+        public async Task Update(int id, TEntity entity)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Delete an entity
-        /// </summary>
-        /// <param name="entity">Entity to delete</param>
-        /// <returns>Api response</returns>
-        public Task Delete(TEntity entity)
-        {
-            throw new NotImplementedException();
+            await _client.Update(ApiPath, id, entity);
         }
 
         /// <summary>
@@ -88,9 +78,9 @@ namespace Zest.Net.Entities.Repositories
         /// </summary>
         /// <param name="id">Entity id to delete</param>
         /// <returns>Api response</returns>
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            await _client.Delete<TEntity>(ApiPath, id);
         }
     }
 }

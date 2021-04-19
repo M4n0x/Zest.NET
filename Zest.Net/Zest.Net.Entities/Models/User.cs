@@ -9,6 +9,15 @@ namespace Zest.Net.Entities.Models
     [ApiPath("users")]
     public class User
     {
+        public User(string username, string firstname, string lastname, string email, string password)
+        {
+            Username = username;
+            Firstname = firstname;
+            Lastname = lastname;
+            Email = email;
+            Password = password;
+        }
+
         /// <summary>
         /// User Id
         /// </summary>
@@ -39,6 +48,7 @@ namespace Zest.Net.Entities.Models
         /// <summary>
         /// User Profile Picture
         /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string Picture { get; set; }
 
         /// <summary>

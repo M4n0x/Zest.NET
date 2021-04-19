@@ -26,11 +26,19 @@ namespace Zest.Net.Front.Pages
         public UserHttpRepository UserRepo { get; set; }
 
         /// <summary>
+        /// Resource Repository
+        /// </summary>
+        [Inject]
+        public ResourcesHttpRepository ResourceRepo { get; set; }
+
+        /// <summary>
         /// Method fired on initialization
         /// </summary>
         /// <returns>Task</returns>
         protected override async Task OnInitializedAsync()
         {
+            await AuthRepository.Register("lucas2", "Lulu", "Fridez", "lucas.fridez@yopmail.com", "123123");
+
             await AuthRepository.Login("lucas", "123123");
 
             var users = await UserRepo.Get();
