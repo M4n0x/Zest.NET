@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -41,8 +42,14 @@ namespace Zest.Net.Entities.Client
                 password = password
             });
 
-            var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
-            Token = deserializedData.Access;
+            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new Exception("Credentials mismatch !");
+            } else
+            {
+                var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
+                Token = deserializedData.Access;
+            }
         }
 
         public async Task Register(string username, string firstname, string lastname, string email, string password)
@@ -50,6 +57,10 @@ namespace Zest.Net.Entities.Client
             User newUser = new User(username, firstname, lastname, email, password);
             var response = await Http.PostAsJsonAsync("users", newUser);
 
+            if (response.StatusCode != System.Net.HttpStatusCode.OK &&  response.StatusCode != System.Net.HttpStatusCode.Created)
+            {
+                throw new Exception("OK ERROR");
+            }
             // TODO !
 
             var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();

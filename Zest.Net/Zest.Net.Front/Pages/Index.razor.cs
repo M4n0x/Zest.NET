@@ -37,9 +37,22 @@ namespace Zest.Net.Front.Pages
         /// <returns>Task</returns>
         protected override async Task OnInitializedAsync()
         {
-            await AuthRepository.Register("lucas2", "Lulu", "Fridez", "lucas.fridez@yopmail.com", "123123");
+            try
+            {
+                //await AuthRepository.Register("lucas2", "Lulu", "Fridez", "lucas.fridez@yopmail.com", "123123");
+            } catch(Exception e)
+            {
+                Console.WriteLine(e);
+                // Show error
+            }
 
-            await AuthRepository.Login("lucas", "123123");
+            try
+            {
+                await AuthRepository.Login("lucas", "123123");
+            } catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             var users = await UserRepo.Get();
 
