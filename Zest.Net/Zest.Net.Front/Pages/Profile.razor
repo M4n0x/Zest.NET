@@ -1,0 +1,47 @@
+﻿@page "/profile"
+
+<div class="row">
+    <div class="col-md-9">
+
+        <div class="row">
+            @foreach (Resource res in resources)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 col">
+                    <CardResource Title="@res.name" />
+                </div>
+            }
+
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        <h1>Profile</h1>
+    </div>
+</div>
+
+
+@code {
+
+    private List<Resource> resources = new List<Resource>() {
+                                                                new Resource(1, "test", "test description", null),
+                                                                new Resource(2, "tes 123", "test description", null),
+                                                                new Resource(4, "Salut le monstre", "test description", null)
+                                                             };
+
+    public struct Resource
+    {
+        public Resource(int id, string name, string descr, string pic)
+        {
+            this.id = id;
+            this.name = name;
+            this.description = descr;
+            this.picture = pic;
+        }
+
+        public int id { set; get; }
+        public String name { set; get; }
+        public String description { set; get; }
+        public String picture { set; get; }
+    }
+
+}
