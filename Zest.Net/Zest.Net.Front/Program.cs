@@ -32,6 +32,8 @@ namespace Zest.Net.Front
             builder.Services.AddSingleton(client => new ZestClient(
                 new HttpClient { BaseAddress = new Uri("https://zest.srvz-webapp.he-arc.ch/api/") }));
             builder.Services.AddScoped<UserHttpRepository>();
+            builder.Services.AddScoped<AuthHttpRepository>();
+            builder.Services.AddScoped<ResourcesHttpRepository>();
             await builder.Build().RunAsync();
         }
     }

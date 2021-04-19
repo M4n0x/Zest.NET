@@ -47,9 +47,9 @@ namespace Zest.Net.Entities.Repositories
         /// </summary>
         /// <param name="id">Entity id to get</param>
         /// <returns>Api response</returns>
-        public Task<TEntity> GetById(int id)
+        public async Task<TEntity> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _client.GetById<TEntity>(ApiPath, id);
         }
 
         /// <summary>

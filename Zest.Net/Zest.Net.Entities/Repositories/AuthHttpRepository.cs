@@ -7,12 +7,17 @@ using Zest.Net.Entities.Models;
 
 namespace Zest.Net.Entities.Repositories
 {
-    class AuthHttpRepository
+    public class AuthHttpRepository
     {
         /// <summary>
         /// Zest client
         /// </summary>
         private readonly ZestClient _client;
+
+        public AuthHttpRepository(ZestClient client)
+        {
+            _client = client;
+        }
 
         public virtual async Task Login(string username, string password)
         {

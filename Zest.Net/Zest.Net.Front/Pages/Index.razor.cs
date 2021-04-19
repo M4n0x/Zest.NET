@@ -8,17 +8,30 @@ using Zest.Net.Entities.Repositories;
 
 namespace Zest.Net.Front.Pages
 {
+    /// <summary>
+    /// Index page
+    /// </summary>
     public partial class Index
     {
+        /// <summary>
+        /// Authentication repository
+        /// </summary>
         [Inject]
-        public ZestClient Http { get; set; }
+        public AuthHttpRepository AuthRepository { get; set; }
 
+        /// <summary>
+        /// User Repository
+        /// </summary>
         [Inject]
         public UserHttpRepository UserRepo { get; set; }
 
+        /// <summary>
+        /// Method fired on initialization
+        /// </summary>
+        /// <returns>Task</returns>
         protected override async Task OnInitializedAsync()
         {
-            await Http.Login("lucas", "123123");
+            await AuthRepository.Login("lucas", "123123");
 
             var users = await UserRepo.Get();
 
