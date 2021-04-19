@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Zest.Net.Entities.Exceptions;
 using Zest.Net.Entities.Models;
 
 namespace Zest.Net.Entities.Client
@@ -44,7 +45,7 @@ namespace Zest.Net.Entities.Client
 
             if(response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                throw new Exception("Credentials mismatch !");
+                throw new CredentialsMismatchZestException();
             } else
             {
                 var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
@@ -57,14 +58,17 @@ namespace Zest.Net.Entities.Client
             User newUser = new User(username, firstname, lastname, email, password);
             var response = await Http.PostAsJsonAsync("users", newUser);
 
-            if (response.StatusCode != System.Net.HttpStatusCode.OK &&  response.StatusCode != System.Net.HttpStatusCode.Created)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.Created)
             {
-                throw new Exception("OK ERROR");
+                var registerExceptionData = await response.Content.ReadFromJsonAsync<RegisterError>();
+                var emailError = registerExceptionData.Email != null ? registerExceptionData.Email[0] : "";
+                var usernameError = registerExceptionData.Username != null ? registerExceptionData.Username[0] : "";
+                throw new RegisterZestException(emailError, usernameError);
+            } else
+            {
+                var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
+                Token = deserializedData.Access;
             }
-            // TODO !
-
-            var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
-            Token = deserializedData.Access;
         }
 
         /// <summary>
