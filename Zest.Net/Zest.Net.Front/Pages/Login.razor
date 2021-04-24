@@ -1,0 +1,22 @@
+﻿@page "/Login"
+@layout Zest.Net.Front.Shared.UnloggedLayout
+
+
+<h1 class="h3 mb-3 font-weight-normal">Log in</h1>
+
+<!-- USERNAME -->
+<label for="txtUsername" class="sr-only">Username</label>
+<input @bind="Username" @bind:event="oninput" type="text" id="txtUsername" class="form-control" placeholder="Enter username" required autofocus="">
+
+<!-- PASSWORD-->
+<label for="txtPassword" class="sr-only">Password</label>
+<input @bind="Password" @bind:event="oninput" type="password" id="txtPassword" class="form-control" min="6" placeholder="Enter password" required>
+
+<!-- ERROR -->
+@if (ShowLoginError)
+{
+    <p class="text-danger mt-3">@LoginError</p>
+}
+
+<!-- BUTTON -->
+<button disabled="@IsLoginButtonDeactivated" class="btn btn-lg btn-primary btn-block" @onclick="PostLoginForm" type="button">Sign in</button>
