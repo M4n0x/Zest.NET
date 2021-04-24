@@ -15,7 +15,7 @@ namespace Zest.Net.Entities.Exceptions
         /// <param name="message">Exception message</param>
         public ZestException(string message) : base(message)
         {
-
+            // nothing
         }
     }
 }

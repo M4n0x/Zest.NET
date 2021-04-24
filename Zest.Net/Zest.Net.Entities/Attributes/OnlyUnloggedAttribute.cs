@@ -10,6 +10,9 @@ namespace Zest.Net.Entities.Attributes
     [AttributeUsage(AttributeTargets.Class)]
     public class OnlyUnloggedAttribute : Attribute
     {
+        /// <summary>
+        /// Simple constructor
+        /// </summary>
         public OnlyUnloggedAttribute()
         {
             // nothing
