@@ -1,22 +1,9 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    ss
-    <div class="main">
-
-        <div id="body" class="content px-4">
-            @Body
-        </div>
-        <footer>
-            <p>
-                Made with <span class="oi oi-heart text-danger" aria-hidden="true"></span>
-                during all the <span class="oi oi-moon text-yellow" aria-hidden="true"></span>
-                by Danz, Fridez & Mendes Reis
-            </p>
-            <p>
-                Zest.Net v@(Assembly.GetExecutingAssembly().GetName().Version.ToString())
-            </p>
-        </footer>
-    </div>
-</div>
+<body class="text-center">
+    <form class="form-signin">
+        <img class="mb-4" src="https://user-images.githubusercontent.com/43986199/110090803-fb9f8000-7d97-11eb-8269-75e1e6aa86b3.png" alt="" width="72" height="72">
+        @Body
+    </form>
+</body>
 
