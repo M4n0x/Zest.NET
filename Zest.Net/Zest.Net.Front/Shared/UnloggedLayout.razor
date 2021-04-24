@@ -3,7 +3,13 @@
 <body class="text-center">
     <form class="form-signin">
         <img class="mb-4" src="https://user-images.githubusercontent.com/43986199/110090803-fb9f8000-7d97-11eb-8269-75e1e6aa86b3.png" alt="" width="72" height="72">
-        @Body
+        <CascadingValue Value="this" Name="UnloggedLayout">
+            @Body
+        </CascadingValue>
     </form>
+
+    <div id="loader" class="@LoaderClass">
+        <p>Loading...</p>
+    </div>
 </body>
 

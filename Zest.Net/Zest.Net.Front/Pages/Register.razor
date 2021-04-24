@@ -6,6 +6,7 @@
 <!-- USERNAME -->
 <label for="txtUsername" class="sr-only">Username</label>
 <input @bind="Username" @bind:event="oninput" type="text" id="txtUsername"
+       @onkeydown="@OnKeydownUsername"
        class="form-control @(UsernameError.Length > 0 ? "is-invalid" : "")"
        placeholder="Enter username" required autofocus=""
        aria-describedby="validateUsername">
@@ -28,6 +29,7 @@
 <!-- Email-->
 <label for="txtEmail" class="sr-only">Email</label>
 <input @bind="Email" @bind:event="oninput" type="email" id="txtEmail"
+       @onkeydown="@OnKeydownEmail"
        class="form-control mt-1 @(EmailError.Length > 0 ? "is-invalid" : "")"
        placeholder="Enter email" required
        aria-describedby="validateEmail">

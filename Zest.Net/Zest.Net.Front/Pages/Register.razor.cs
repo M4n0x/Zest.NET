@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Zest.Net.Entities.Exceptions;
 using Zest.Net.Entities.Repositories;
+using Zest.Net.Front.Shared;
 
 namespace Zest.Net.Front.Pages
 {
@@ -15,6 +16,9 @@ namespace Zest.Net.Front.Pages
         /// </summary>
         [Inject]
         public AuthHttpRepository AuthRepository { get; set; }
+
+        [CascadingParameter(Name = "UnloggedLayout")]
+        public UnloggedLayout UnloggedLayout { get; set; }
 
         private string RegisterError { get; set; } = "";
 
@@ -44,6 +48,7 @@ namespace Zest.Net.Front.Pages
         {
             try
             {
+                UnloggedLayout.ShowLoader();
                 await AuthRepository.Register(Username, Firstname, Lastname, Email, Password);
             }
             catch (RegisterZestException e)
@@ -52,6 +57,20 @@ namespace Zest.Net.Front.Pages
                 EmailError = e.EmailError;
                 UsernameError = e.UsernameError;
             }
+            finally
+            {
+                UnloggedLayout.HideLoader();
+            }
+        }
+
+        private void OnKeydownUsername()
+        {
+            UsernameError = UsernameError = "";
+        }
+
+        private void OnKeydownEmail()
+        {
+            EmailError = EmailError = "";
         }
     }
 }
