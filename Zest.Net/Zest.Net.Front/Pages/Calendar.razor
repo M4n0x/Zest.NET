@@ -1,0 +1,66 @@
+﻿@page "/calendar"
+@inject Radzen.DialogService DialogService
+
+<h1>Calendar</h1>
+
+<div class="col-xl-6">
+    <RadzenScheduler @ref=@calendar style="height: 700px;" TItem="DataItem" Data=@bookings StartProperty="Start" EndProperty="End"
+                     TextProperty="Text" SelectedIndex="2"
+                     SlotSelect=@OnSlotSelect AppointmentSelect=@OnEventSelect AppointmentRender=@OnEventRender>
+        <RadzenDayView />
+        <RadzenWeekView />
+        <RadzenMonthView />
+    </RadzenScheduler>
+</div>
+
+
+@code {
+
+    
+
+    RadzenScheduler<DataItem> calendar;
+    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
+
+    IList<DataItem> bookings = new List<DataItem>
+{
+        new DataItem { Start = DateTime.Today.AddDays(-2), End = DateTime.Today.AddDays(-2), Text = "Birthday" },
+        new DataItem { Start = DateTime.Today.AddDays(-11), End = DateTime.Today.AddDays(-10), Text = "Day off" },
+        new DataItem { Start = DateTime.Today.AddDays(-10), End = DateTime.Today.AddDays(-8), Text = "Work from home" },
+        new DataItem { Start = DateTime.Today.AddHours(10), End = DateTime.Today.AddHours(12), Text = "Online meeting" },
+        new DataItem { Start = DateTime.Today.AddHours(10), End = DateTime.Today.AddHours(13), Text = "Skype call" },
+        new DataItem { Start = DateTime.Today.AddHours(14), End = DateTime.Today.AddHours(14).AddMinutes(30), Text = "Dentist appointment" },
+        new DataItem { Start = DateTime.Today.AddDays(1), End = DateTime.Today.AddDays(12), Text = "Vacation" },
+    };
+
+    async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
+    {
+
+        DataItem data = await DialogService.OpenAsync<AddEventPage>("Add Appointment",
+            new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+
+        if (data != null)
+        {
+            bookings.Add(data);
+            // Either call the Reload method or reassign the Data property of the Scheduler
+            await calendar.Reload();
+        }
+    }
+
+    async Task OnEventSelect(SchedulerAppointmentSelectEventArgs<DataItem> args)
+    {
+        await DialogService.OpenAsync<EditEventPage>("Edit event", new Dictionary<string, object> { { "Event", args.Data } });
+
+        Console.WriteLine("Coucou");
+
+        await calendar.Reload();
+    }
+
+    void OnEventRender(SchedulerAppointmentRenderEventArgs<DataItem> args)
+    {
+        if (args.Data.Text == "Birthday")
+        {
+            args.Attributes["style"] = "background: red";
+        }
+    }
+
+}
