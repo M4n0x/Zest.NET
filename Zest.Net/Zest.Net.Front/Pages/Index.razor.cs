@@ -31,39 +31,5 @@ namespace Zest.Net.Front.Pages
         /// </summary>
         [Inject]
         public ResourcesHttpRepository ResourceRepo { get; set; }
-
-        /// <summary>
-        /// Method fired on initialization
-        /// </summary>
-        /// <returns>Task</returns>
-        protected override async Task OnInitializedAsync()
-        {
-            try
-            {
-                //await AuthRepository.Register("lucas2", "Lulu", "Fridez", "lucas.fridez@ssyopmail.com", "123123");
-                await AuthRepository.Login("lucas", "123123");
-            } catch(RegisterZestException e)
-            {
-                Console.WriteLine(e.UsernameError);
-                Console.WriteLine(e.EmailError);
-                // Show error
-            }
-
-            //try
-            //{
-            //    await AuthRepository.Login("lucas", "123123");
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e);
-            //}
-
-            //var users = await UserRepo.Get();
-
-            //foreach (var user in users)
-            //{
-            //    Console.WriteLine(user.Firstname);
-            //}
-        }
     }
 }
