@@ -21,6 +21,12 @@ namespace Zest.Net.Front.Pages
         public AuthHttpRepository AuthRepository { get; set; }
 
         /// <summary>
+        /// NavigationManager to redirect
+        /// </summary>
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
+        /// <summary>
         /// Unlogged Parent layout
         /// </summary>
         [CascadingParameter(Name = "UnloggedLayout")]
@@ -61,6 +67,7 @@ namespace Zest.Net.Front.Pages
             {
                 UnloggedLayout.ShowLoader();
                 await AuthRepository.Login(Username, Password);
+                NavigationManager.NavigateTo("Home");
             }
             catch (Exception e)
             {
