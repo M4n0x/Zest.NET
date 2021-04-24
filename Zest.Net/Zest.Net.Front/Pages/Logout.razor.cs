@@ -15,6 +15,9 @@ namespace Zest.Net.Front.Pages
         [Inject]
         public AuthHttpRepository AuthRepository { get; set; }
 
+        /// <summary>
+        /// On Initialized event, automatically logout current user
+        /// </summary>
         protected override void OnInitialized()
         {
             AuthRepository.Logout();
