@@ -27,6 +27,11 @@ namespace Zest.Net.Entities.Client
         public string Token { get; set; } = null;
 
         /// <summary>
+        /// Current loggedIn User
+        /// </summary>
+        public User CurrentUser { get; set; } = null;
+
+        /// <summary>
         /// ZestClient Constructor
         /// </summary>
         /// <param name="http">http client</param>
@@ -56,6 +61,7 @@ namespace Zest.Net.Entities.Client
             {
                 var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
                 Token = deserializedData.Access;
+                CurrentUser = deserializedData.User;
             }
         }
 
@@ -83,6 +89,7 @@ namespace Zest.Net.Entities.Client
             {
                 var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
                 Token = deserializedData.Access;
+                CurrentUser = deserializedData.User;
             }
         }
 

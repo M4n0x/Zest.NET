@@ -14,5 +14,8 @@
         /// Access token value
         /// </summary>
         public string Access { get; set; }
+
+        public User User { get; set; }
     }
+
 }
