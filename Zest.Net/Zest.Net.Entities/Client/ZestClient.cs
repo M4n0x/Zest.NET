@@ -66,6 +66,15 @@ namespace Zest.Net.Entities.Client
         }
 
         /// <summary>
+        /// Logout Current user
+        /// </summary>
+        public void Logout()
+        {
+            Token = null;
+            CurrentUser = null;
+        }
+
+        /// <summary>
         /// Register a User with API
         /// </summary>
         /// <param name="username">username</param>
