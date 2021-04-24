@@ -7,8 +7,9 @@
 
     <div class="main">
         <div class="top-row px-4 div-auth">
-            <NavLink class="btn-auth" href="login">
-                <span class="oi oi-account-login" aria-hidden="true"></span> Login
+            <span class="text-white"><span class="oi oi-person" aria-hidden="true"></span>@Client.CurrentUser.Firstname @Client.CurrentUser.Lastname</span>
+            <NavLink class="btn-auth" href="Logout">
+                <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
             </NavLink>
         </div>
 
