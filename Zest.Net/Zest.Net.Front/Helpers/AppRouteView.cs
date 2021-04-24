@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Zest.Net.Entities.Attributes;
 using Zest.Net.Entities.Client;
 
 namespace Zest.Net.Front.Helpers
@@ -33,9 +34,14 @@ namespace Zest.Net.Front.Helpers
         protected override void Render(RenderTreeBuilder builder)
         {
             var authorize = Attribute.GetCustomAttribute(RouteData.PageType, typeof(AuthorizeAttribute)) != null;
+            var onlyUnlogged = Attribute.GetCustomAttribute(RouteData.PageType, typeof(OnlyUnloggedAttribute)) != null;
             if (authorize && Client.Token == null)
             {
                 NavigationManager.NavigateTo($"Login");
+            }
+            else if (onlyUnlogged && Client.Token != null)
+            {
+                NavigationManager.NavigateTo($"");
             }
             else
             {
