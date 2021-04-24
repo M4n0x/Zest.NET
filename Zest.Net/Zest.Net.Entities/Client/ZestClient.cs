@@ -182,5 +182,17 @@ namespace Zest.Net.Entities.Client
         {
             await Request<object, object>($"{url}/{id}", HttpMethod.Post);
         }
+
+        /// <summary>
+        /// Patch an entity
+        /// </summary>
+        /// <param name="url">url</param>
+        /// <param name="id">Entity id to patch</param>
+        /// <param name="data">Data to update for entity</param>
+        /// <returns>Task</returns>
+        public async Task Patch(string url, int id, object data)
+        {
+            await Request<object, object>($"{url}/{id}", HttpMethod.Patch, data);
+        }
     }
 }
