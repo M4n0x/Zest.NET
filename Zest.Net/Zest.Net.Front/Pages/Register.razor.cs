@@ -89,7 +89,7 @@ namespace Zest.Net.Front.Pages
             {
                 UnloggedLayout.ShowLoader();
                 await AuthRepository.Register(Username, Firstname, Lastname, Email, Password);
-                NavigationManager.NavigateTo($"Home");
+                NavigationManager.NavigateTo($"");
             }
             catch (RegisterZestException e)
             {
