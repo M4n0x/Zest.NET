@@ -1,0 +1,34 @@
+﻿@page "/Register"
+@layout Zest.Net.Front.Shared.UnloggedLayout
+
+<h1 class="h3 mb-3 font-weight-normal">Register form</h1>
+
+<!-- USERNAME -->
+<label for="txtUsername" class="sr-only">Username</label>
+<input @bind="Username" @bind:event="oninput" type="text" id="txtUsername" class="form-control" placeholder="Enter username" required autofocus="">
+
+<!-- Firstname -->
+<label for="txtFirstname" class="sr-only">Firstname</label>
+<input @bind="Firstname" @bind:event="oninput" type="text" id="txtFirstname" class="form-control" placeholder="Enter firstname" required>
+
+<!-- Lastname -->
+<label for="txtLastname" class="sr-only">Lastname</label>
+<input @bind="Lastname" @bind:event="oninput" type="text" id="txtLastname" class="form-control" placeholder="Enter lastname" required>
+
+
+<!-- Email-->
+<label for="txtEmail" class="sr-only">Email</label>
+<input @bind="Email" @bind:event="oninput" type="email" id="txtEmail" class="form-control" placeholder="Enter email" required>
+
+<!-- PASSWORD-->
+<label for="txtPassword" class="sr-only">Password</label>
+<input @bind="Password" @bind:event="oninput" type="password" id="txtPassword" class="form-control" min="6" placeholder="Enter password" required>
+
+<!-- ERROR -->
+@if (ShowRegisterError)
+{
+    <p class="text-danger mt-3">@RegisterError</p>
+}
+
+<!-- BUTTON -->
+<button disabled="@IsRegisterButtonDeactivated" class="btn btn-lg btn-primary btn-block" @onclick="PostRegisterForm" type="button">Register</button>
