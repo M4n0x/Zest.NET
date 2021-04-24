@@ -67,7 +67,7 @@ namespace Zest.Net.Front.Pages
             {
                 UnloggedLayout.ShowLoader();
                 await AuthRepository.Login(Username, Password);
-                NavigationManager.NavigateTo("Home");
+                NavigationManager.NavigateTo("");
             }
             catch (Exception e)
             {
