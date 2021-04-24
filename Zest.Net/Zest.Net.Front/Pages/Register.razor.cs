@@ -17,27 +17,60 @@ namespace Zest.Net.Front.Pages
         [Inject]
         public AuthHttpRepository AuthRepository { get; set; }
 
+        /// <summary>
+        /// Parent layout
+        /// </summary>
         [CascadingParameter(Name = "UnloggedLayout")]
         public UnloggedLayout UnloggedLayout { get; set; }
 
+        /// <summary>
+        /// Register error text
+        /// </summary>
         private string RegisterError { get; set; } = "";
 
+        /// <summary>
+        /// Define if register error must be shown
+        /// </summary>
         private bool ShowRegisterError => RegisterError != "";
 
+        /// <summary>
+        /// Define if register button must be activated
+        /// </summary>
         private bool IsRegisterButtonDeactivated => Username.Length == 0 || Password.Length < 6 || Firstname.Length == 0 || Lastname.Length == 0 || Email.Length == 0;
 
+        /// <summary>
+        /// Username property
+        /// </summary>
         private string Username { get; set; } = "";
 
+        /// <summary>
+        /// Firstname property
+        /// </summary>
         private string Firstname { get; set; } = "";
 
+        /// <summary>
+        /// Lastname property
+        /// </summary>
         private string Lastname { get; set; } = "";
 
+        /// <summary>
+        /// Email property
+        /// </summary>
         private string Email { get; set; } = "";
 
+        /// <summary>
+        /// Password property (with API)
+        /// </summary>
         private string Password { get; set; } = "";
 
+        /// <summary>
+        /// Email error
+        /// </summary>
         private string EmailError { get; set; } = "";
 
+        /// <summary>
+        /// Username error (with API)
+        /// </summary>
         private string UsernameError { get; set; } = "";
 
         /// <summary>
@@ -63,11 +96,17 @@ namespace Zest.Net.Front.Pages
             }
         }
 
+        /// <summary>
+        /// Remove Username error on keydown
+        /// </summary>
         private void OnKeydownUsername()
         {
             UsernameError = UsernameError = "";
         }
 
+        /// <summary>
+        /// Remove email error on keydown
+        /// </summary>
         private void OnKeydownEmail()
         {
             EmailError = EmailError = "";
