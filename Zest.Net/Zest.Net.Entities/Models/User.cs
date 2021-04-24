@@ -9,6 +9,14 @@ namespace Zest.Net.Entities.Models
     [ApiPath("users")]
     public class User
     {
+        /// <summary>
+        /// User constructor
+        /// </summary>
+        /// <param name="username">Username</param>
+        /// <param name="firstname">Firstname</param>
+        /// <param name="lastname">Lastname</param>
+        /// <param name="email">Email</param>
+        /// <param name="password">Password</param>
         public User(string username, string firstname, string lastname, string email, string password)
         {
             Username = username;

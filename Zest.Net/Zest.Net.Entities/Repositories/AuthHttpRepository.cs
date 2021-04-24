@@ -37,6 +37,9 @@ namespace Zest.Net.Entities.Repositories
             await _client.Login(username, password);
         }
 
+        /// <summary>
+        /// Logout current user
+        /// </summary>
         public void Logout()
         {
             _client.Logout();
