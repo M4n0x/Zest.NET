@@ -82,5 +82,16 @@ namespace Zest.Net.Entities.Repositories
         {
             await _client.Delete<TEntity>(ApiPath, id);
         }
+
+        /// <summary>
+        /// Patch an entity by id
+        /// </summary>
+        /// <param name="id">Entity id</param>
+        /// <param name="data">Data to update for Entity</param>
+        /// <returns>Api response</returns>
+        public async Task Patch(int id, object data)
+        {
+            await _client.Patch(ApiPath, id, data);
+        }
     }
 }

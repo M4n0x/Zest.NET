@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Zest.Net.Entities.Exceptions
 {
+    /// <summary>
+    /// Custom Zest Exception
+    /// </summary>
     public class ZestException : Exception
     {
         /// <summary>

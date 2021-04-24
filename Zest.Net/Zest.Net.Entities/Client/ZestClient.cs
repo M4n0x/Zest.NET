@@ -24,7 +24,7 @@ namespace Zest.Net.Entities.Client
         /// <summary>
         /// User JWT Token
         /// </summary>
-        public string Token { get; set; }
+        public string Token { get; set; } = null;
 
         /// <summary>
         /// ZestClient Constructor
@@ -35,6 +35,12 @@ namespace Zest.Net.Entities.Client
             this.Http = http;
         }
 
+        /// <summary>
+        /// Login user with API
+        /// </summary>
+        /// <param name="username">User name</param>
+        /// <param name="password">Password</param>
+        /// <returns>Task</returns>
         public async Task Login(string username, string password)
         {
             var response = await Http.PostAsJsonAsync("auth/token/", new
@@ -53,6 +59,15 @@ namespace Zest.Net.Entities.Client
             }
         }
 
+        /// <summary>
+        /// Register a User with API
+        /// </summary>
+        /// <param name="username">username</param>
+        /// <param name="firstname">User firstname</param>
+        /// <param name="lastname">User lastname</param>
+        /// <param name="email">User email</param>
+        /// <param name="password">User password</param>
+        /// <returns>Task</returns>
         public async Task Register(string username, string firstname, string lastname, string email, string password)
         {
             User newUser = new User(username, firstname, lastname, email, password);
@@ -166,6 +181,18 @@ namespace Zest.Net.Entities.Client
         public async Task Delete<TEntity>(string url, int id)
         {
             await Request<object, object>($"{url}/{id}", HttpMethod.Post);
+        }
+
+        /// <summary>
+        /// Patch an entity
+        /// </summary>
+        /// <param name="url">url</param>
+        /// <param name="id">Entity id to patch</param>
+        /// <param name="data">Data to update for entity</param>
+        /// <returns>Task</returns>
+        public async Task Patch(string url, int id, object data)
+        {
+            await Request<object, object>($"{url}/{id}", HttpMethod.Patch, data);
         }
     }
 }

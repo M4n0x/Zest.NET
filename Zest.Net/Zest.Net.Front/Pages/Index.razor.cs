@@ -40,7 +40,8 @@ namespace Zest.Net.Front.Pages
         {
             try
             {
-                await AuthRepository.Register("lucas2", "Lulu", "Fridez", "lucas.fridez@ssyopmail.com", "123123");
+                //await AuthRepository.Register("lucas2", "Lulu", "Fridez", "lucas.fridez@ssyopmail.com", "123123");
+                await AuthRepository.Login("lucas", "123123");
             } catch(RegisterZestException e)
             {
                 Console.WriteLine(e.UsernameError);
