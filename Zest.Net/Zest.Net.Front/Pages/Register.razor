@@ -1,0 +1,57 @@
+﻿@page "/Register"
+@layout Zest.Net.Front.Shared.UnloggedLayout
+
+<h1 class="h3 mb-3 font-weight-normal">Register form</h1>
+
+<!-- USERNAME -->
+<label for="txtUsername" class="sr-only">Username</label>
+<input @bind="Username" @bind:event="oninput" type="text" id="txtUsername"
+       @onkeydown="@OnKeydownUsername"
+       class="form-control @(UsernameError.Length > 0 ? "is-invalid" : "")"
+       placeholder="Enter username" required autofocus=""
+       aria-describedby="validateUsername">
+@if (UsernameError.Length > 0)
+{
+    <div id="validateUsername" class="invalid-feedback">
+        @UsernameError
+    </div>
+}
+
+<!-- Firstname -->
+<label for="txtFirstname" class="sr-only">Firstname</label>
+<input @bind="Firstname" @bind:event="oninput" type="text" id="txtFirstname" class="form-control mt-1" placeholder="Enter firstname" required>
+
+<!-- Lastname -->
+<label for="txtLastname" class="sr-only">Lastname</label>
+<input @bind="Lastname" @bind:event="oninput" type="text" id="txtLastname" class="form-control mt-1" placeholder="Enter lastname" required>
+
+
+<!-- Email-->
+<label for="txtEmail" class="sr-only">Email</label>
+<input @bind="Email" @bind:event="oninput" type="email" id="txtEmail"
+       @onkeydown="@OnKeydownEmail"
+       class="form-control mt-1 @(EmailError.Length > 0 ? "is-invalid" : "")"
+       placeholder="Enter email" required
+       aria-describedby="validateEmail">
+@if (EmailError.Length > 0)
+{
+    <div id="validateEmail" class="invalid-feedback">
+        @EmailError
+    </div>
+}
+
+<!-- PASSWORD-->
+<label for="txtPassword" class="sr-only">Password</label>
+<input @bind="Password" @bind:event="oninput" type="password" id="txtPassword" class="form-control mt-1" min="6" placeholder="Enter password" required aria-describedby="passwordHelpBlock">
+<small id="passwordHelpBlock" class="form-text text-muted">
+    Your password must contain at least 6 characters
+</small>
+
+<!-- ERROR -->
+@if (ShowRegisterError)
+{
+    <p class="text-danger mt-3">@RegisterError</p>
+}
+
+<!-- BUTTON -->
+<button disabled="@IsRegisterButtonDeactivated" class="btn btn-lg btn-primary btn-block" @onclick="PostRegisterForm" type="button">Register</button>

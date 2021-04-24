@@ -33,9 +33,9 @@ namespace Zest.Net.Front.Helpers
         protected override void Render(RenderTreeBuilder builder)
         {
             var authorize = Attribute.GetCustomAttribute(RouteData.PageType, typeof(AuthorizeAttribute)) != null;
-            if (authorize && Client.Token != null)
+            if (authorize && Client.Token == null)
             {
-                NavigationManager.NavigateTo($"login");
+                NavigationManager.NavigateTo($"Login");
             }
             else
             {
