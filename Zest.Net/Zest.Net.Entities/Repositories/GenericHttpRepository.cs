@@ -17,7 +17,7 @@ namespace Zest.Net.Entities.Repositories
         /// <summary>
         /// Zest client
         /// </summary>
-        private readonly ZestClient _client;
+        protected readonly ZestClient _client;
 
         /// <summary>
         /// Api path for used entity (TEntity)

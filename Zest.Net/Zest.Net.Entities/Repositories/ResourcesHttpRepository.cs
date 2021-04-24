@@ -1,4 +1,6 @@
-﻿using Zest.Net.Entities.Client;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Zest.Net.Entities.Client;
 using Zest.Net.Entities.Models;
 
 namespace Zest.Net.Entities.Repositories
@@ -14,7 +16,46 @@ namespace Zest.Net.Entities.Repositories
         /// <param name="client">Zest client</param>
         public ResourcesHttpRepository(ZestClient client) : base(client)
         {
-            // Nothing
+            // nothing
+        }
+
+        /// <summary>
+        /// Get Booking path with ShareId
+        /// </summary>
+        /// <param name="shareId">ShareId</param>
+        /// <returns>Api path</returns>
+        private string BookingApiPath(string shareId) => $"{ApiPath}/{shareId}";
+
+        /// <summary>
+        /// Get bookings and resource info with shareid
+        /// </summary>
+        /// <param name="shareId">Resource shareId</param>
+        /// <returns>Api response with Resource and its bookings</returns>
+        public async Task<IEnumerable<Resource>> GetBookings(string shareId)
+        {
+            return await _client.Get<Resource>(BookingApiPath(shareId));
+        }
+
+        /// <summary>
+        /// Post a Booking for a given resource
+        /// </summary>
+        /// <param name="shareId">Resource shareId</param>
+        /// <param name="booking">Booking to create</param>
+        /// <returns>Task</returns>
+        public async Task PostBooking(string shareId, Booking booking)
+        {
+            await _client.Insert($"{BookingApiPath(shareId)}/bookings", booking);
+        }
+
+        /// <summary>
+        /// Delete a Booking for a given Resource
+        /// </summary>
+        /// <param name="shareId">Resource shareId</param>
+        /// <param name="id">Booking id</param>
+        /// <returns>Task</returns>
+        public async Task DeleteBooking(string shareId, int id)
+        {
+            await _client.Delete<Booking>($"{BookingApiPath(shareId)}/bookings", id);
         }
     }
 }
