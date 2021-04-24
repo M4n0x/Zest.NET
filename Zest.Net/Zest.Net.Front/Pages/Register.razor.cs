@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Zest.Net.Entities.Exceptions;
 using Zest.Net.Entities.Repositories;
 
 namespace Zest.Net.Front.Pages
@@ -31,6 +32,10 @@ namespace Zest.Net.Front.Pages
 
         private string Password { get; set; } = "";
 
+        private string EmailError { get; set; } = "";
+
+        private string UsernameError { get; set; } = "";
+
         /// <summary>
         /// Method fired on button register click
         /// </summary>
@@ -41,9 +46,11 @@ namespace Zest.Net.Front.Pages
             {
                 await AuthRepository.Register(Username, Firstname, Lastname, Email, Password);
             }
-            catch (Exception e)
+            catch (RegisterZestException e)
             {
                 RegisterError = e.Message;
+                EmailError = e.EmailError;
+                UsernameError = e.UsernameError;
             }
         }
     }
