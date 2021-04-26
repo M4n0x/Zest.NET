@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Zest.Net.Entities.Client;
 using Zest.Net.Entities.Exceptions;
+using Zest.Net.Entities.Models;
 using Zest.Net.Entities.Repositories;
 using Zest.Net.Front.Shared;
 
@@ -19,6 +22,18 @@ namespace Zest.Net.Front.Pages
         /// </summary>
         [Inject]
         public AuthHttpRepository AuthRepository { get; set; }
+
+        /// <summary>
+        /// Zest client to check current User
+        /// </summary>
+        [Inject]
+        public ZestClient Client { get; set; }
+
+        /// <summary>
+        /// Session Storage
+        /// </summary>
+        [Inject]
+        private ISyncSessionStorageService SessionStorage { get; set; }
 
         /// <summary>
         /// NavigationManager to redirect
@@ -67,6 +82,8 @@ namespace Zest.Net.Front.Pages
             {
                 UnloggedLayout.ShowLoader();
                 await AuthRepository.Login(Username, Password);
+                SessionStorage.SetItem("Token", Client.Token);
+                SessionStorage.SetItem("User", Client.CurrentUser);
                 NavigationManager.NavigateTo("");
             }
             catch (Exception e)
