@@ -1,9 +1,24 @@
-﻿@page "/resources/{Id:int}/edit"
+﻿@page "/resources/{shareId}/edit"
+@inject ResourcesHttpRepository repo
 
-<h3>ResourceEdit</h3>
+<ResourceDetails resource="@resource" />
 
 @code {
     [Parameter]
-    public int Id { get; set; }
+    public string ShareId { get; set; }
+
+    private Resource resource;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+
+        Console.WriteLine(ShareId);
+
+        var data = await repo.GetBookings(ShareId);
+
+        resource = data.First();
+
+    }
 
 }

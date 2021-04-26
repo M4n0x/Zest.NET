@@ -13,7 +13,7 @@ namespace Zest.Net.Entities.Models
         /// <summary>
         /// Resource Id
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; set; } = -1;
 
         /// <summary>
         /// Resource name
