@@ -1,3 +1,4 @@
+using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,7 @@ namespace Zest.Net.Front
             builder.Services.AddScoped<UserHttpRepository>();
             builder.Services.AddScoped<AuthHttpRepository>();
             builder.Services.AddScoped<ResourcesHttpRepository>();
+            builder.Services.AddBlazoredSessionStorage();
             await builder.Build().RunAsync();
         }
     }
