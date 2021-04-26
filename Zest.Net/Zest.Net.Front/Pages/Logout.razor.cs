@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,19 @@ namespace Zest.Net.Front.Pages
         public AuthHttpRepository AuthRepository { get; set; }
 
         /// <summary>
+        /// Session Storage
+        /// </summary>
+        [Inject]
+        private ISyncSessionStorageService SessionStorage { get; set; }
+
+        /// <summary>
         /// On Initialized event, automatically logout current user
         /// </summary>
         protected override void OnInitialized()
         {
             AuthRepository.Logout();
+            SessionStorage.RemoveItem("Token");
+            SessionStorage.RemoveItem("User");
         }
     }
 }
