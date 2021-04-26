@@ -43,5 +43,13 @@ namespace Zest.Net.Entities.Interfaces
         /// <param name="id">Entity id</param>
         /// <returns>Task</returns>
         Task Delete(int id);
+
+        /// <summary>
+        /// Patch an entity with given id
+        /// </summary>
+        /// <param name="id">Entity id to patch</param>
+        /// <param name="data">Data to patch</param>
+        /// <returns>Task</returns>
+        Task Patch(int id, object data);
     }
 }

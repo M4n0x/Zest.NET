@@ -3,16 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Zest.Net.Entities.Client;
-using Zest.Net.Entities.Exceptions;
 using Zest.Net.Entities.Repositories;
 
 namespace Zest.Net.Front.Pages
 {
-    /// <summary>
-    /// Index page
-    /// </summary>
-    public partial class Index
+    public partial class Logout
     {
         /// <summary>
         /// Authentication repository
@@ -21,15 +16,11 @@ namespace Zest.Net.Front.Pages
         public AuthHttpRepository AuthRepository { get; set; }
 
         /// <summary>
-        /// User Repository
+        /// On Initialized event, automatically logout current user
         /// </summary>
-        [Inject]
-        public UserHttpRepository UserRepo { get; set; }
-
-        /// <summary>
-        /// Resource Repository
-        /// </summary>
-        [Inject]
-        public ResourcesHttpRepository ResourceRepo { get; set; }
+        protected override void OnInitialized()
+        {
+            AuthRepository.Logout();
+        }
     }
 }

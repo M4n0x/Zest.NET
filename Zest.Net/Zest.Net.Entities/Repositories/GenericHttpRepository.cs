@@ -17,7 +17,7 @@ namespace Zest.Net.Entities.Repositories
         /// <summary>
         /// Zest client
         /// </summary>
-        private readonly ZestClient _client;
+        protected readonly ZestClient _client;
 
         /// <summary>
         /// Api path for used entity (TEntity)
@@ -81,6 +81,17 @@ namespace Zest.Net.Entities.Repositories
         public async Task Delete(int id)
         {
             await _client.Delete<TEntity>(ApiPath, id);
+        }
+
+        /// <summary>
+        /// Patch an entity by id
+        /// </summary>
+        /// <param name="id">Entity id</param>
+        /// <param name="data">Data to update for Entity</param>
+        /// <returns>Api response</returns>
+        public async Task Patch(int id, object data)
+        {
+            await _client.Patch(ApiPath, id, data);
         }
     }
 }
