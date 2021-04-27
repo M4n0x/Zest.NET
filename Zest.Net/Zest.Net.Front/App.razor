@@ -10,3 +10,31 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@inject ZestClient client;
+@inject ISyncSessionStorageService sessionStorage
+@code {
+
+    /// <summary>
+    /// Try to keep logged status from sessionStorage
+    /// </summary>
+    private void KeepLoggedStatus()
+    {
+
+        var token = sessionStorage.GetItem<string>("Token");
+        if (client.Token == null && token != null)
+        {
+            client.Token = token;
+            client.CurrentUser = sessionStorage.GetItem<User>("User");
+        }
+    }
+
+    /// <summary>
+    /// Method fired on initialization
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        KeepLoggedStatus();
+        base.OnInitialized();
+    }
+}
