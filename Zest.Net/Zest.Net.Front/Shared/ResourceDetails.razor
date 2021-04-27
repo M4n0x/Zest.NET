@@ -7,25 +7,27 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <form>
+                        <EditForm Model="@resource" OnSubmit="FormSubmitted">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" value="@(resource.Name ?? "")" required name="name" class="form-control" id="name" placeholder="enter your name">
+                                <input type="text" required name="name" class="form-control" id="name" placeholder="enter your name" @bind-value="resource.Name">
                             </div>
 
                             <div class="form-group mb-4">
                                 <label for="picture">Picture</label>
                                 @if (resource.Picture != null)
-                                    {
-                                     <img src="@resource.Picture" max-width="100"/>
-                                    }
-                                <input type="file" class="form-control-file" id="picture">
+                                {
+                                    <img src="@resource.Picture" max-width="100" />
+                                }
+                                <input type="file" class="form-control-file" id="picture" >
                             </div>
 
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea class="form-control" name="description" required id="description" placeholder="Enter a description">
-                                   @(resource.Description ?? "") 
+                                <textarea class="form-control" name="description" @bind="resource.Description" required id="description" placeholder="Enter a description">
+                                   
                                 </textarea>
                             </div>
 
@@ -38,8 +40,8 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-outline-success mt-3">Update</button>
-                        </form>
+                            <button type="submit" class="btn btn-outline-success mt-3">@(resource.Id==-1? "Create" : "Update")</button>
+                        </EditForm>
                     </div>
                 </div>
             </div>
@@ -51,4 +53,9 @@
     [Parameter]
     public Resource resource { set; get; }
 
+    void FormSubmitted(EditContext edit)
+    {
+        bool isValid = edit.Validate();
+
+    }
 }
