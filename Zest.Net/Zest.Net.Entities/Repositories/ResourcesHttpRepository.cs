@@ -5,6 +5,14 @@ using Zest.Net.Entities.Models;
 
 namespace Zest.Net.Entities.Repositories
 {
+    public class BookingsGet
+    {
+        public int Id { get; set; }
+        public IEnumerable<Booking> Bookings { get; set; }
+        public User Author { get; set; }
+
+    }
+
     /// <summary>
     /// Resources Http repository
     /// </summary>
@@ -31,9 +39,9 @@ namespace Zest.Net.Entities.Repositories
         /// </summary>
         /// <param name="shareId">Resource shareId</param>
         /// <returns>Api response with Resource and its bookings</returns>
-        public async Task<IEnumerable<Resource>> GetBookings(string shareId)
+        public async Task<BookingsGet> GetBookings(string shareId)
         {
-            return await _client.Get<Resource>(BookingApiPath(shareId));
+            return await _client.GetSingle<BookingsGet>(BookingApiPath(shareId));
         }
 
         /// <summary>
@@ -44,7 +52,14 @@ namespace Zest.Net.Entities.Repositories
         /// <returns>Task</returns>
         public async Task PostBooking(string shareId, Booking booking)
         {
-            await _client.Insert($"{BookingApiPath(shareId)}/bookings", booking);
+            BookingPost bp = new BookingPost
+            {
+                DateStart = booking.DateStart,
+                DateEnd = booking.DateEnd,
+                User = booking.User.Id
+            };
+
+            await _client.Insert($"{BookingApiPath(shareId)}/bookings", bp);
         }
 
         /// <summary>

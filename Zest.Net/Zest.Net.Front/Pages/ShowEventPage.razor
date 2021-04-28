@@ -1,0 +1,45 @@
+﻿@inject DialogService DialogService
+
+<RadzenTemplateForm TItem="DataItem" Data="@model" Submit=@OnSubmit>
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="Start Date" />
+        </div>
+        <div class="col">
+            <RadzenLabel Text="@model.Start.ToString()" Name="Start"  />
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="End Date" />
+        </div>
+        <div class="col">
+            <RadzenLabel Name="End" Text="@model.End.ToString()" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col">
+            <RadzenButton ButtonType="ButtonType.Button" Text="Cancel" Click="OnCancel" />
+        </div>
+        <div class="col">
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Delete"  />
+        </div>
+    </div>
+</RadzenTemplateForm>
+@code {
+    [Parameter]
+    public DataItem Event { get; set; }
+
+    DataItem model = new DataItem();
+
+    void OnSubmit(DataItem model)
+    {
+        DialogService.Close(model);
+    }
+
+    void OnCancel()
+    {
+        DialogService.Close();
+    }
+}

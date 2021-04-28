@@ -43,6 +43,15 @@ namespace Zest.Net.Entities.Repositories
         }
 
         /// <summary>
+        /// Get entities
+        /// </summary>
+        /// <returns>Api response</returns>
+        public virtual async Task<TEntity> GetSingle()
+        {
+            return await _client.GetSingle<TEntity>(ApiPath);
+        }
+
+        /// <summary>
         /// Get entity by id
         /// </summary>
         /// <param name="id">Entity id to get</param>

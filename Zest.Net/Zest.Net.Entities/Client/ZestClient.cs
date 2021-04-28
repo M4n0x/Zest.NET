@@ -151,6 +151,17 @@ namespace Zest.Net.Entities.Client
         }
 
         /// <summary>
+        /// Get entities
+        /// </summary>
+        /// <typeparam name="TEntity">Entity type</typeparam>
+        /// <param name="url">url</param>
+        /// <returns>Api response</returns>
+        public async Task<TEntity> GetSingle<TEntity>(string url)
+        {
+            return await Request<TEntity, object>(url, HttpMethod.Get);
+        }
+
+        /// <summary>
         /// Get entity by id
         /// </summary>
         /// <typeparam name="TEntity">Entity type</typeparam>
