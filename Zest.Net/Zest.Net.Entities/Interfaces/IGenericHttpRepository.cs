@@ -27,7 +27,7 @@ namespace Zest.Net.Entities.Interfaces
         /// </summary>
         /// <param name="entity">entity to save in database</param>
         /// <returns>Task</returns>
-        Task Insert(TEntity entity);
+        Task<TEntity> Insert(TEntity entity);
 
         /// <summary>
         /// Update an entity with a given id
@@ -35,7 +35,7 @@ namespace Zest.Net.Entities.Interfaces
         /// <param name="id">Entity id to update</param>
         /// <param name="entity">New data for entity</param>
         /// <returns>Task</returns>
-        Task Update(int id, TEntity entity);
+        Task<TEntity> Update(int id, TEntity entity);
 
         /// <summary>
         /// Delete an entity with given id
