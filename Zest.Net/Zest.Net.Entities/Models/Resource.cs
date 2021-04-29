@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Zest.Net.Entities.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace Zest.Net.Entities.Models
 {
@@ -13,11 +14,13 @@ namespace Zest.Net.Entities.Models
         /// <summary>
         /// Resource Id
         /// </summary>
-        public int Id { get; set; }
+        
+        public int Id { get; set; } = -1;
 
         /// <summary>
         /// Resource name
         /// </summary>
+        [StringLength(255, ErrorMessage = "Identifier too long (255 character limit).")]
         public string Name { get; set; }
 
         /// <summary>

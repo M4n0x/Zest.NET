@@ -1,16 +1,12 @@
+using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Radzen;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Zest.Net.Entities.Client;
-using Zest.Net.Entities.Interfaces;
-using Zest.Net.Entities.Models;
 using Zest.Net.Entities.Repositories;
 
 namespace Zest.Net.Front
@@ -35,12 +31,11 @@ namespace Zest.Net.Front
             builder.Services.AddScoped<UserHttpRepository>();
             builder.Services.AddScoped<AuthHttpRepository>();
             builder.Services.AddScoped<ResourcesHttpRepository>();
-
             builder.Services.AddScoped<DialogService>();
             builder.Services.AddScoped<NotificationService>();
             builder.Services.AddScoped<TooltipService>();
             builder.Services.AddScoped<ContextMenuService>();
-
+            builder.Services.AddBlazoredSessionStorage();
             await builder.Build().RunAsync();
         }
     }
