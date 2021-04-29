@@ -37,6 +37,17 @@ namespace Zest.Net.Entities.Repositories
             await _client.Login(username, password);
         }
 
+        public async Task PatchProfile(string firstname, string lastname)
+        {
+            _client.CurrentUser.Lastname = lastname;
+            _client.CurrentUser.Firstname = firstname;
+            await _client.Patch("users", "profile", new
+            {
+                first_name = firstname,
+                last_name = lastname
+            });
+        }
+
         /// <summary>
         /// Logout current user
         /// </summary>
