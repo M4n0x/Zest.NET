@@ -1,13 +1,16 @@
-﻿<div class="row-fluid">
+﻿@inject ResourcesHttpRepository repo
+@inject NavigationManager UriHelper
+
+<div class="row-fluid">
     <div class="col-12">
         <div class="row">
             <div class="col-12">
-                <h1>@(resource.Id==-1? "Create resource" : "Update resource")</h1>
+                <h1>@(resource.Id==0? "Create resource" : "Update resource")</h1>
             </div>
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <EditForm Model="@resource" OnSubmit="FormSubmitted">
+                        <EditForm Model="@resource" OnSubmit="FormSubmitted" enctype="multipart/form-data">
                             <DataAnnotationsValidator />
                             <ValidationSummary />
                             <div class="form-group">
@@ -17,11 +20,7 @@
 
                             <div class="form-group mb-4">
                                 <label for="picture">Picture</label>
-                                @if (resource.Picture != null)
-                                {
-                                    <img src="@resource.Picture" max-width="100" />
-                                }
-                                <input type="file" class="form-control-file" id="picture" >
+                                <RadzenFileInput  @bind-Value="resource.Picture" TValue="string" Change="@(args => SetPicture(args))"/>
                             </div>
 
                             <div class="form-group">
@@ -33,14 +32,14 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-12">
-                                    <h4>Date start</h4> <RadzenDatePicker TValue="DateTime?" Value="@(resource.DateStart?? "")" Change=@(args => resource.DateStart = args != null ?  args?.ToString("dd/MM/yyyy") : resource.DateStart) DateFormat="dd/MM/yyyy" />
+                                    <h4>Date start</h4> <RadzenDatePicker TValue="DateTime?" @bind-Value="@startDate"DateFormat="dd/MM/yyyy" />
                                 </div>
                                 <div class="col-md-6 col-12">
-                                    <h4>Date end</h4> <RadzenDatePicker TValue="DateTime?" Value="@(resource.DateEnd?? "")" Change=@(args => resource.DateEnd = args != null ?  args?.ToString("dd/MM/yyyy") : resource.DateEnd) DateFormat="dd/MM/yyyy" />
+                                    <h4>Date end</h4> <RadzenDatePicker TValue="DateTime?"  Change=@(value => LoadEndDate(value)) DateFormat="dd/MM/yyyy" />
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-outline-success mt-3">@(resource.Id==-1? "Create" : "Update")</button>
+                            <button type="submit" class="btn btn-outline-success mt-3">@(resource.Id==0? "Create" : "Update")</button>
                         </EditForm>
                     </div>
                 </div>
@@ -51,11 +50,55 @@
 
 @code { DateTime? value = DateTime.Now;
     [Parameter]
-    public Resource resource { set; get; }
+    public ResourceForm resource { set; get; }
 
-    void FormSubmitted(EditContext edit)
+    private DateTime? startDate = (DateTime.Now);
+
+    private const string DATE_FORMAT_EXPORT = "yyyy-MM-dd";
+
+    async Task FormSubmitted(EditContext edit)
     {
         bool isValid = edit.Validate();
 
+
+        if (isValid)
+        {
+            if (resource.Id == 0)
+            {
+                //create
+                var res = await repo.Insert(resource, multipart:true);
+                UriHelper.NavigateTo($"/calendars/{res.ShareId}");
+            }
+            else
+            {
+                //update
+                await repo.Update(resource.ShareId, resource, multipart:true);
+                UriHelper.NavigateTo($"/calendars/{resource.ShareId}");
+            }
+        }
+
+    }
+
+    void SetPicture(string base64Image)
+    {
+        Console.WriteLine(base64Image);
+
+        var offset = base64Image.IndexOf(',') + 1;
+
+        var imageInBytes = Convert.FromBase64String(base64Image[offset..^0]);
+
+        resource.Picture = imageInBytes;
+
+        
+    }
+
+    void LoadStartDate(DateTime? value)
+    {
+        resource.DateStart = value?.ToString(DATE_FORMAT_EXPORT);
+    }
+
+    void LoadEndDate(DateTime? value)
+    {
+        resource.DateStart = value?.ToString(DATE_FORMAT_EXPORT);
     }
 }

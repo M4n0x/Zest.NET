@@ -7,7 +7,7 @@
     [Parameter]
     public string ShareId { get; set; }
 
-    private Resource resource;
+    private Resource resource = new Resource();
 
     protected override async Task OnInitializedAsync()
     {
@@ -15,10 +15,9 @@
 
         Console.WriteLine(ShareId);
 
-        var data = await repo.GetBookings(ShareId);
+        var data = await repo.GetById(ShareId);
 
-        resource = data.First();
-
+        resource = data;
     }
 
 }
