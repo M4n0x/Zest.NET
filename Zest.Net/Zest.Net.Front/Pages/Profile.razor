@@ -1,0 +1,120 @@
+﻿@page "/profile"
+
+<div class="row">
+    <div class="col-md-8">
+
+        <div class="row mb-2">
+            <div class="col-12">
+                <h2>My Ressources</h2>
+            </div>
+            
+            @foreach (Resource res in resources)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 col">
+                    <CardResource Title="@res.name" />
+                </div>
+            }
+
+        </div>
+
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-12">
+                <h2>My Profile</h2>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            @if (!String.IsNullOrEmpty(profile.picture))
+                            {
+                                <img src="@profile.picture" class="rounded mx-auto d-block" alt="profile picture" width="100">
+                            }
+                            <h5 class="card-title">@profile.name @profile.firstname</h5>
+                            <small>You need to change personnal informations ? the form below can help you !</small>
+                        </div>
+                        <form>
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input type="email" value="@profile.email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="your email" disabled>
+                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" value="@profile.username" class="form-control" id="username" placeholder="your username" disabled>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" value="@profile.name" name="name" class="form-control" id="name" placeholder="enter your name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="firstname">Firstname</label>
+                                <input type="text" value="@profile.firstname" name="firstname" class="form-control" id="firstname" placeholder="enter your firstname">
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="avatar">Avatar</label>
+                                <input type="file" class="form-control-file" id="avatar">
+                            </div>
+
+
+                            <button type="submit" class="btn btn-outline-success">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    private UserProfile profile = new UserProfile("M4n0x", "Mendes Reis", "stevereis@test.ch", "https://zest.srvz-webapp.he-arc.ch/uploads/users/pictures/huile-essentielle-de-citron.jpg", "Steve");
+
+    private List<Resource> resources = new List<Resource>() {
+                                                        new Resource(1, "test", "test description", null),
+                                                        new Resource(2, "tes 123", "test description", null),
+                                                        new Resource(4, "Salut le monstre", "test description", null),
+                                                        new Resource(5, "Salut le monstre", "test description", null),
+                                                        new Resource(6, "Salut le monstre", "test description", null)
+                                                        };
+
+    public struct UserProfile
+    {
+        public UserProfile(string username, string name, string email, string pic, string firstname)
+        {
+            this.username = username;
+            this.name = name;
+            this.email = email;
+            this.picture = pic;
+            this.firstname = firstname;
+        }
+
+        public String username { set; get; }
+        public String email { set; get; }
+        public String name { set; get; }
+        public String firstname { set; get; }
+        public String picture { set; get; }
+    }
+
+    public struct Resource
+    {
+        public Resource(int id, string name, string descr, string pic)
+        {
+            this.id = id;
+            this.name = name;
+            this.description = descr;
+            this.picture = pic;
+        }
+
+        public int id { set; get; }
+        public String name { set; get; }
+        public String description { set; get; }
+        public String picture { set; get; }
+    }
+
+}
