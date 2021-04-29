@@ -232,7 +232,7 @@ namespace Zest.Net.Entities.Client
 
         public async Task Delete<TEntity>(string url, string id)
         {
-            await Request<object, object>($"{url}/{id}", HttpMethod.Post);
+            await Request<object, object>($"{url}/{id}", HttpMethod.Delete);
         }
 
         /// <summary>
