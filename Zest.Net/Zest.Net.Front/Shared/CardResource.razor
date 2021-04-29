@@ -7,7 +7,7 @@
     <div class="card-body">
         <h5 class="card-title">@Title</h5>
         <p class="card-text">@Title </p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <a href="@ResourceLink" class="btn btn-primary">See more</a>
     </div>
 </div>
 
@@ -16,4 +16,9 @@
     [Parameter]
     public string Title { get; set; }
     public string img { get; set; }
+
+    [Parameter]
+    public string ShareId { get; set; }
+
+    public string ResourceLink => $"/calendars/{ShareId}";
 }

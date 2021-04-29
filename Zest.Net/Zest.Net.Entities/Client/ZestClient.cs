@@ -54,10 +54,11 @@ namespace Zest.Net.Entities.Client
                 password = password
             });
 
-            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 throw new CredentialsMismatchZestException();
-            } else
+            }
+            else
             {
                 var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
                 Token = deserializedData.Access;
@@ -94,7 +95,8 @@ namespace Zest.Net.Entities.Client
                 var emailError = registerExceptionData.Email != null ? registerExceptionData.Email[0] : "";
                 var usernameError = registerExceptionData.Username != null ? registerExceptionData.Username[0] : "";
                 throw new RegisterZestException(emailError, usernameError);
-            } else
+            }
+            else
             {
                 var deserializedData = await response.Content.ReadFromJsonAsync<TokenResponse>();
                 Token = deserializedData.Access;
@@ -117,7 +119,7 @@ namespace Zest.Net.Entities.Client
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
-            if(body != null)
+            if (body != null)
             {
                 request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
             }
@@ -209,6 +211,18 @@ namespace Zest.Net.Entities.Client
         public async Task Patch(string url, int id, object data)
         {
             await Request<object, object>($"{url}/{id}", HttpMethod.Patch, data);
+        }
+
+        /// <summary>
+        /// Patch an entity
+        /// </summary>
+        /// <param name="url">url</param>
+        /// <param name="id">Entity id to patch</param>
+        /// <param name="data">Data to update for entity</param>
+        /// <returns>Task</returns>
+        public async Task Patch(string url, string path, object data)
+        {
+            await Request<object, object>($"{url}/{path}", HttpMethod.Patch, data);
         }
     }
 }
