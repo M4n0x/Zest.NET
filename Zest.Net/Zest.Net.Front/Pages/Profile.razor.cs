@@ -80,7 +80,7 @@ namespace Zest.Net.Front.Pages
         /// <summary>
         /// Picture property
         /// </summary>
-        private string Picture { get => _picture != null ? Picture : $"https://eu.ui-avatars.com/api/?name={Lastname}+{Firstname}&background=71945c&color=fff&rounded=true&format=svg&size=150"; }
+        private string Picture { get => _picture != null ? $"https://zest.srvz-webapp.he-arc.ch/{_picture}" : $"https://eu.ui-avatars.com/api/?name={Lastname}+{Firstname}&background=71945c&color=fff&rounded=true&format=svg&size=150"; }
 
         /// <summary>
         /// Define if register button must be activated
@@ -126,6 +126,7 @@ namespace Zest.Net.Front.Pages
 
             await AuthRepository.PatchProfile(formContent);
             SessionStorage.SetItem("User", Client.CurrentUser);
+            _picture = Client.CurrentUser.Picture;
         }
 
         /// <summary>

@@ -40,7 +40,8 @@ namespace Zest.Net.Entities.Repositories
 
         public async Task PatchProfile(MultipartFormDataContent content)
         {
-            await _client.RequestMultipart<object, object>("users/profile", HttpMethod.Patch, content);
+            var user = await _client.RequestMultipart<User, object>("users/profile", HttpMethod.Patch, content);
+            _client.CurrentUser.Picture = user.Picture;
         }
 
         /// <summary>
