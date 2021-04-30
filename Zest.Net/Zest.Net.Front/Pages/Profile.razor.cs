@@ -1,8 +1,8 @@
 ﻿using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components;
-using System;
+using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Zest.Net.Entities.Client;
 using Zest.Net.Entities.Models;
@@ -63,6 +63,11 @@ namespace Zest.Net.Front.Pages
         private string Username { get; set; }
 
         /// <summary>
+        /// File property
+        /// </summary>
+        private IBrowserFile File { get; set; } = null;
+
+        /// <summary>
         /// My Resources property
         /// </summary>
         private IEnumerable<Resource> Resources { get; set; } = new List<Resource>();
@@ -75,7 +80,7 @@ namespace Zest.Net.Front.Pages
         /// <summary>
         /// Picture property
         /// </summary>
-        private string Picture { get => _picture != null ? Picture : $"https://eu.ui-avatars.com/api/?name={Lastname}+{Firstname}&background=71945c&color=fff&rounded=true&format=svg&size=150"; }
+        private string Picture { get => _picture != null ? $"https://zest.srvz-webapp.he-arc.ch/{_picture}" : $"https://eu.ui-avatars.com/api/?name={Lastname}+{Firstname}&background=71945c&color=fff&rounded=true&format=svg&size=150"; }
 
         /// <summary>
         /// Define if register button must be activated
@@ -103,8 +108,34 @@ namespace Zest.Net.Front.Pages
         /// <returns>Task</returns>
         private async Task PostProfileForm()
         {
-            await AuthRepository.PatchProfile(Firstname, Lastname);
+
+            var formContent = new MultipartFormDataContent
+            {
+                // Send form text values here
+                {new StringContent(Firstname), "first_name"},
+                {new StringContent(Lastname),"description" },
+            };
+
+            if (File != null)
+            {
+                formContent.Add(new StreamContent(File.OpenReadStream()), "picture", File.Name);
+            }
+
+            Client.CurrentUser.Lastname = Lastname;
+            Client.CurrentUser.Firstname = Firstname;
+
+            await AuthRepository.PatchProfile(formContent);
             SessionStorage.SetItem("User", Client.CurrentUser);
+            _picture = Client.CurrentUser.Picture;
+        }
+
+        /// <summary>
+        /// Handle file 
+        /// </summary>
+        /// <param name="e"></param>
+        private void LoadPicture(InputFileChangeEventArgs e)
+        {
+            File = e.File;
         }
     }
 }
