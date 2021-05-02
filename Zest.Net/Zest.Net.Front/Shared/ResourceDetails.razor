@@ -1,6 +1,7 @@
 ﻿@inject ResourcesHttpRepository repo
 @inject NavigationManager UriHelper
-<!--
+@inject ZestClient client
+@using System.IO
 
 
 <div class="row-fluid">
@@ -22,7 +23,11 @@
 
                             <div class="form-group mb-4">
                                 <label for="picture">Picture</label>
-                                <RadzenFileInput  @bind-Value="resource.Picture" TValue="string" Change="@(args => SetPicture(args))"/>
+                                @if (!string.IsNullOrEmpty(resource.Picture))
+                                {
+                                    <RadzenImage src="@resource.Picture" style="max-width:150px;" />
+                                }
+                                <InputFile OnChange="@LoadFile" />
                             </div>
 
                             <div class="form-group">
@@ -34,14 +39,19 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-12">
-                                    <h4>Date start</h4> <RadzenDatePicker TValue="DateTime?" @bind-Value="@startDate"DateFormat="dd/MM/yyyy" />
+                                    <h4>Date start</h4> <RadzenDatePicker TValue="DateTime?" @bind-Value="startDate" DateFormat="dd/MM/yyyy" />
                                 </div>
                                 <div class="col-md-6 col-12">
-                                    <h4>Date end</h4> <RadzenDatePicker TValue="DateTime?"  Change=@(value => LoadEndDate(value)) DateFormat="dd/MM/yyyy" />
+                                    <h4>Date end</h4> <RadzenDatePicker TValue="DateTime?" @bind-Value="endDate" DateFormat="dd/MM/yyyy" />
                                 </div>
                             </div>
 
                             <button type="submit" class="btn btn-outline-success mt-3">@(resource.Id==0? "Create" : "Update")</button>
+                            @if (resource.Id != 0 && client.CurrentUser.Id == resource.Author.Id)
+                            {
+                                <button class="btn btn-outline-danger ml-2 mt-3 pull-right" @onclick="DeleteResource">Delete</button>
+                            }
+
                         </EditForm>
                     </div>
                 </div>
@@ -49,62 +59,82 @@
         </div>
     </div>
 </div>
-    -->
-@code {
-    /*
 
+@code {
     DateTime? value = DateTime.Now;
     [Parameter]
-    public ResourceForm resource { set; get; }
+    public Resource resource { set; get; }
+    public string image;
+    public IBrowserFile file = null;
+
 
     private DateTime? startDate = (DateTime.Now);
+    private DateTime? endDate = null;
 
     private const string DATE_FORMAT_EXPORT = "yyyy-MM-dd";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        startDate = DateTime.ParseExact(resource.DateStart, DATE_FORMAT_EXPORT, System.Globalization.CultureInfo.InvariantCulture);
+        if (resource.DateEnd != null)
+            endDate = DateTime.ParseExact(resource.DateEnd, DATE_FORMAT_EXPORT, System.Globalization.CultureInfo.InvariantCulture);
+    }
+
+    private void LoadFile(InputFileChangeEventArgs e)
+    {
+        file = e.File;
+    }
+
+    async Task DeleteResource()
+    {
+        if (resource.Id == 0 || client.CurrentUser.Id != resource.Author.Id) return;
+        await repo.Delete(resource.ShareId);
+        UriHelper.NavigateTo("/");
+    }
 
     async Task FormSubmitted(EditContext edit)
     {
         bool isValid = edit.Validate();
 
-
         if (isValid)
         {
+            resource.DateStart = startDate?.ToString(DATE_FORMAT_EXPORT);
+            resource.DateEnd = endDate?.ToString(DATE_FORMAT_EXPORT);
+
+            var formContent = new MultipartFormDataContent
+        {
+                // Send form text values here
+                {new StringContent(resource.Name), "name"},
+                {new StringContent(resource.Description),"description" },
+                {new StringContent(resource.DateStart),"date_start" },
+            };
+
+            if (!string.IsNullOrEmpty(resource.DateEnd))
+            {
+                formContent.Add(new StringContent(resource.DateEnd), "date_end");
+            }
+
+            if (file != null)
+            {
+                formContent.Add(new StreamContent(file.OpenReadStream()), "picture", file.Name);
+            }
+
             if (resource.Id == 0)
             {
                 //create
-                var res = await repo.Insert(resource, multipart: true);
+
+                var res = await client.RequestMultipart<Resource, Resource>(repo.ApiPath, HttpMethod.Post, formContent);
+
                 UriHelper.NavigateTo($"/calendars/{res.ShareId}");
             }
             else
             {
                 //update
-                await repo.Update(resource.ShareId, resource, multipart: true);
+
+                var res = await client.RequestMultipart<Resource, Resource>($"{repo.ApiPath}/{resource.ShareId}", HttpMethod.Patch, formContent);
                 UriHelper.NavigateTo($"/calendars/{resource.ShareId}");
             }
         }
-
     }
-
-    void SetPicture(string base64Image)
-    {
-        Console.WriteLine(base64Image);
-
-        var offset = base64Image.IndexOf(',') + 1;
-
-        var imageInBytes = Convert.FromBase64String(base64Image[offset..^0]);
-
-        resource.Picture = imageInBytes;
-
-
-    }
-
-    void LoadStartDate(DateTime? value)
-    {
-        resource.DateStart = value?.ToString(DATE_FORMAT_EXPORT);
-    }
-
-    void LoadEndDate(DateTime? value)
-    {
-        resource.DateStart = value?.ToString(DATE_FORMAT_EXPORT);
-    }
-    */
 }

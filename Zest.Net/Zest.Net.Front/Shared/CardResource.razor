@@ -1,0 +1,24 @@
+﻿<div class="card mb-3" >
+    @if (!String.IsNullOrEmpty(img))
+    {
+        <img src="..." class="card-img-top" alt="...">
+    }
+    
+    <div class="card-body">
+        <h5 class="card-title">@Title</h5>
+        <p class="card-text">@Title </p>
+        <a href="@ResourceLink" class="btn btn-primary">See more</a>
+    </div>
+</div>
+
+@code {
+    // Demonstrates how a parent component can supply parameters
+    [Parameter]
+    public string Title { get; set; }
+    public string img { get; set; }
+
+    [Parameter]
+    public string ShareId { get; set; }
+
+    public string ResourceLink => $"/calendars/{ShareId}";
+}

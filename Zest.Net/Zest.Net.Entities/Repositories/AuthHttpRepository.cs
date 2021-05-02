@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Zest.Net.Entities.Client;
@@ -35,6 +36,12 @@ namespace Zest.Net.Entities.Repositories
         public virtual async Task Login(string username, string password)
         {
             await _client.Login(username, password);
+        }
+
+        public async Task PatchProfile(MultipartFormDataContent content)
+        {
+            var user = await _client.RequestMultipart<User, object>("users/profile", HttpMethod.Patch, content);
+            _client.CurrentUser.Picture = user.Picture;
         }
 
         /// <summary>
