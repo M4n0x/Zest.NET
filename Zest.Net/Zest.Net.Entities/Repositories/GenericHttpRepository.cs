@@ -89,7 +89,7 @@ namespace Zest.Net.Entities.Repositories
         /// <returns>Api response</returns>
         public async Task Delete(int id)
         {
-            await _client.Delete<TEntity>(ApiPath, id);
+            await _client.Delete(ApiPath, id);
         }
 
         /// <summary>

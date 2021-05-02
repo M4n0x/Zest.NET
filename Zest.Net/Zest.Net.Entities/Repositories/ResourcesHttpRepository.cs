@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Zest.Net.Entities.Client;
 using Zest.Net.Entities.Models;
@@ -50,7 +52,7 @@ namespace Zest.Net.Entities.Repositories
         /// <param name="shareId">Resource shareId</param>
         /// <param name="booking">Booking to create</param>
         /// <returns>Task</returns>
-        public async Task PostBooking(string shareId, Booking booking)
+        public async Task<BookingPostResponse> PostBooking(string shareId, Booking booking)
         {
             BookingPost bp = new BookingPost
             {
@@ -59,7 +61,7 @@ namespace Zest.Net.Entities.Repositories
                 User = booking.User.Id
             };
 
-            await _client.Insert($"{BookingApiPath(shareId)}/bookings", bp);
+             return await _client.Request<BookingPostResponse, BookingPost>($"{BookingApiPath(shareId)}/bookings", HttpMethod.Post, bp);
         }
 
         /// <summary>
@@ -70,7 +72,8 @@ namespace Zest.Net.Entities.Repositories
         /// <returns>Task</returns>
         public async Task DeleteBooking(string shareId, int id)
         {
-            await _client.Delete<Booking>($"{BookingApiPath(shareId)}/bookings", id);
+            //BUG ????
+            await _client.Delete($"{BookingApiPath(shareId)}/bookings", id);
         }
     }
 }

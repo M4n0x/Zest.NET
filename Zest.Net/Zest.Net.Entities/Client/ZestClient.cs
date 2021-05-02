@@ -111,7 +111,7 @@ namespace Zest.Net.Entities.Client
         /// <param name="method">Http method</param>
         /// <param name="body">Body content</param>
         /// <returns>Api response</returns>
-        private async Task<TResponse> Request<TResponse, TBody>(string url, HttpMethod method, TBody body = null) where TBody : class
+        public async Task<TResponse> Request<TResponse, TBody>(string url, HttpMethod method, TBody body = null) where TBody : class
         {
             var request = new HttpRequestMessage(method, $"{Http.BaseAddress}{url}");
 
@@ -124,7 +124,16 @@ namespace Zest.Net.Entities.Client
 
             using var httpResponse = await Http.SendAsync(request);
 
-            return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
+            if(method != HttpMethod.Delete)
+            {
+                return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
+            }
+            else
+            {
+                return default;
+            }
+
+            
         }
 
         /// <summary>
@@ -134,7 +143,7 @@ namespace Zest.Net.Entities.Client
         /// <param name="url">url</param>
         /// <param name="method">Http method</param>
         /// <returns>Api response</returns>
-        private async Task<TResponse> Request<TResponse>(string url, HttpMethod method)
+        public async Task<TResponse> Request<TResponse>(string url, HttpMethod method)
         {
             return await Request<TResponse, object>(url, method, null);
         }
@@ -180,10 +189,21 @@ namespace Zest.Net.Entities.Client
         /// <param name="url">url</param>
         /// <param name="data">entity to insert</param>
         /// <returns>Api response</returns>
+
+        /*
+        public async Task<object> Insert<TEntity>(string url, TEntity data)
+        {
+            return await Request<object, object>(url, HttpMethod.Post, data);
+        }
+        */
+
+        //original
+        
         public async Task Insert<TEntity>(string url, TEntity data)
         {
             await Request<object, object>(url, HttpMethod.Post, data);
         }
+        
 
         /// <summary>
         /// Update entity
@@ -205,9 +225,9 @@ namespace Zest.Net.Entities.Client
         /// <param name="url">url</param>
         /// <param name="id">Entity id to delete</param>
         /// <returns>Api response</returns>
-        public async Task Delete<TEntity>(string url, int id)
+        public async Task Delete(string url, int id)
         {
-            await Request<object, object>($"{url}/{id}", HttpMethod.Post);
+            await Request<object, object>($"{url}/{id}", HttpMethod.Delete);
         }
 
         /// <summary>

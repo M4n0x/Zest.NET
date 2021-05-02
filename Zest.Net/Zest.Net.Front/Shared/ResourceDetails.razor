@@ -1,5 +1,7 @@
 ﻿@inject ResourcesHttpRepository repo
 @inject NavigationManager UriHelper
+<!--
+
 
 <div class="row-fluid">
     <div class="col-12">
@@ -26,7 +28,7 @@
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea class="form-control" name="description" @bind="resource.Description" required id="description" placeholder="Enter a description">
-                                   
+
                                 </textarea>
                             </div>
 
@@ -47,8 +49,11 @@
         </div>
     </div>
 </div>
+    -->
+@code {
+    /*
 
-@code { DateTime? value = DateTime.Now;
+    DateTime? value = DateTime.Now;
     [Parameter]
     public ResourceForm resource { set; get; }
 
@@ -66,13 +71,13 @@
             if (resource.Id == 0)
             {
                 //create
-                var res = await repo.Insert(resource, multipart:true);
+                var res = await repo.Insert(resource, multipart: true);
                 UriHelper.NavigateTo($"/calendars/{res.ShareId}");
             }
             else
             {
                 //update
-                await repo.Update(resource.ShareId, resource, multipart:true);
+                await repo.Update(resource.ShareId, resource, multipart: true);
                 UriHelper.NavigateTo($"/calendars/{resource.ShareId}");
             }
         }
@@ -89,7 +94,7 @@
 
         resource.Picture = imageInBytes;
 
-        
+
     }
 
     void LoadStartDate(DateTime? value)
@@ -101,4 +106,5 @@
     {
         resource.DateStart = value?.ToString(DATE_FORMAT_EXPORT);
     }
+    */
 }

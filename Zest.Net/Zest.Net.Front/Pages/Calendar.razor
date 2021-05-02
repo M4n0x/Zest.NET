@@ -1,4 +1,4 @@
-﻿@page "/calendar"
+﻿@page "/Calendars/{shareId}"
 @using System.Linq;
 @inject Radzen.DialogService DialogService
 
@@ -16,8 +16,9 @@
 
 
 @code {
-    const string RESOURCE_ID = "JZHMYHtAVY9DmrFXKs84uH";
 
+    [Parameter]
+    public string ShareId { get; set; }
 
     [Inject]
     public ResourcesHttpRepository resourcesRepository { get; set; }
@@ -34,7 +35,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var data = await resourcesRepository.GetBookings(RESOURCE_ID);
+        Console.WriteLine(ShareId);
+
+        var data = await resourcesRepository.GetBookings(ShareId);
 
         resourcesList = data.Bookings.ToList();
 
@@ -50,16 +53,17 @@
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
-
         DataItem data = await DialogService.OpenAsync<AddEventPage>("Add Appointment",
-            new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+            new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End }});
+
+
 
         if (data != null)
         {
+            data.Text = client.CurrentUser.Username;
+
             bookings.Add(data);
 
-
-            // Either call the Reload method or reassign the Data property of the Scheduler
             await calendar.Reload();
 
             Booking b = new Booking();
@@ -68,15 +72,22 @@
             b.DateEnd = data.End.ToString("yyyy-MM-ddTHH:mm:ss");
             b.User = client.CurrentUser;
 
-            await resourcesRepository.PostBooking(RESOURCE_ID, b);
+            var bo = await resourcesRepository.PostBooking(ShareId, b);
         }
     }
 
     async Task OnEventSelect(SchedulerAppointmentSelectEventArgs<DataItem> args)
     {
-        await DialogService.OpenAsync<ShowEventPage>("Show Event", new Dictionary<string, object> { { "Event", args.Data } });
+        DataItem data = await DialogService.OpenAsync<ShowEventPage>("Show Event", new Dictionary<string, object> { { "Event", args.Data } });
 
-        await calendar.Reload();
+
+
+        if (data != null)
+        {
+            bookings.Remove(data);
+            await resourcesRepository.DeleteBooking(ShareId, data.Id);
+
+            await calendar.Reload();
+        }
     }
-
 }

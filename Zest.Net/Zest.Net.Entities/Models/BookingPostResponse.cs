@@ -8,9 +8,10 @@ namespace Zest.Net.Entities.Models
     /// <summary>
     /// Resource Booking class
     /// </summary>
-    public class BookingPost
+    public class BookingPostResponse
     {
 
+        public int Id { get; set; }
 
         /// <summary>
         /// Resource date start
