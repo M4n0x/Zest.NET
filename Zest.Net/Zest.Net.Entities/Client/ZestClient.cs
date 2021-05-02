@@ -121,13 +121,19 @@ namespace Zest.Net.Entities.Client
 
             if (body != null)
             {
-                    request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
-            } 
+                request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+            }
 
             using var httpResponse = await Http.SendAsync(request);
 
-
-            return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
+            if (method != HttpMethod.Delete)
+            {
+                return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
+            }
+            else
+            {
+                return default;
+            }
         }
 
         public async Task<TResponse> RequestMultipart<TResponse, TBody>(string url, HttpMethod method, MultipartFormDataContent content) where TBody : class
