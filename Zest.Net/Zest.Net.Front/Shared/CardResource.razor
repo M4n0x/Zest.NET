@@ -1,24 +1,25 @@
-﻿<div class="card mb-3" >
-    @if (!String.IsNullOrEmpty(img))
+﻿@inject NavigationManager UriHelper
+
+<div class="card mb-3">
+    @if (!String.IsNullOrEmpty(resource.Picture))
     {
-        <img src="..." class="card-img-top" alt="...">
+        <img src="@($"https://zest.srvz-webapp.he-arc.ch/{resource.Picture}")" class="card-img-top" alt="...">
     }
-    
+
     <div class="card-body">
-        <h5 class="card-title">@Title</h5>
-        <p class="card-text">@Title </p>
-        <a href="@ResourceLink" class="btn btn-primary">See more</a>
+        <h5 class="card-title">@resource.Name</h5>
+        <p class="card-text">@resource.Description </p>
+        <RadzenButton Click=@Navigate ButtonStyle="ButtonStyle.Secondary">See more</RadzenButton>
     </div>
 </div>
 
 @code {
-    // Demonstrates how a parent component can supply parameters
-    [Parameter]
-    public string Title { get; set; }
-    public string img { get; set; }
 
     [Parameter]
-    public string ShareId { get; set; }
+    public Resource resource { set; get; }
 
-    public string ResourceLink => $"/calendars/{ShareId}";
+    public void Navigate()
+    {
+        UriHelper.NavigateTo($"/calendars/{resource.ShareId}");
+    }
 }
