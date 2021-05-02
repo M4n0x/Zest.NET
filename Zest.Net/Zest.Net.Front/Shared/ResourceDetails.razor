@@ -1,8 +1,6 @@
 ﻿@inject ResourcesHttpRepository repo
 @inject NavigationManager UriHelper
 @inject ZestClient client
-@using System.IO
-
 
 <div class="row-fluid">
     <div class="col-12">
@@ -33,7 +31,7 @@
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea class="form-control" name="description" @bind="resource.Description" required id="description" placeholder="Enter a description">
-
+                                   
                                 </textarea>
                             </div>
 
@@ -60,13 +58,13 @@
     </div>
 </div>
 
-@code {
-    DateTime? value = DateTime.Now;
+@code { 
     [Parameter]
     public Resource resource { set; get; }
+
     public string image;
     public IBrowserFile file = null;
-
+    DateTime? value = DateTime.Now;
 
     private DateTime? startDate = (DateTime.Now);
     private DateTime? endDate = null;
@@ -103,7 +101,7 @@
             resource.DateEnd = endDate?.ToString(DATE_FORMAT_EXPORT);
 
             var formContent = new MultipartFormDataContent
-        {
+    {
                 // Send form text values here
                 {new StringContent(resource.Name), "name"},
                 {new StringContent(resource.Description),"description" },
@@ -123,18 +121,17 @@
             if (resource.Id == 0)
             {
                 //create
-
                 var res = await client.RequestMultipart<Resource, Resource>(repo.ApiPath, HttpMethod.Post, formContent);
-
                 UriHelper.NavigateTo($"/calendars/{res.ShareId}");
             }
             else
             {
                 //update
-
                 var res = await client.RequestMultipart<Resource, Resource>($"{repo.ApiPath}/{resource.ShareId}", HttpMethod.Patch, formContent);
                 UriHelper.NavigateTo($"/calendars/{resource.ShareId}");
             }
         }
+
     }
+
 }

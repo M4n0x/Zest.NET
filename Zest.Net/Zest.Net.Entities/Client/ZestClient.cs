@@ -221,7 +221,7 @@ namespace Zest.Net.Entities.Client
         public async Task<TEntity> Insert<TEntity>(string url, TEntity data)
 
         {
-            return await Request<TEntity, object>(url, HttpMethod.Post, data, multipart);
+            return await Request<TEntity, object>(url, HttpMethod.Post, data);
         }
         
         /// <summary>
@@ -232,14 +232,14 @@ namespace Zest.Net.Entities.Client
         /// <param name="id">Entity id</param>
         /// <param name="data">Data to update entity</param>
         /// <returns>Api response</returns>
-        public async Task<TEntity> Update<TEntity>(string url, int id, TEntity data, bool multipart = false)
+        public async Task<TEntity> Update<TEntity>(string url, int id, TEntity data)
         {
-            return await Request<TEntity, object>($"{url}/{id}", HttpMethod.Post, data, multipart);
+            return await Request<TEntity, object>($"{url}/{id}", HttpMethod.Post, data);
         }
 
-        public async Task<TEntity> Update<TEntity>(string url, string id, TEntity data, bool multipart = false)
+        public async Task<TEntity> Update<TEntity>(string url, string id, TEntity data)
         {
-            return await Request<TEntity, object>($"{url}/{id}", HttpMethod.Post, data, multipart);
+            return await Request<TEntity, object>($"{url}/{id}", HttpMethod.Post, data);
         }
 
         /// <summary>

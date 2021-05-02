@@ -78,14 +78,5 @@ namespace Zest.Net.Entities.Repositories
             await _client.Delete($"{BookingApiPath(shareId)}/bookings", id);
         }
 
-        public async Task<Resource> Insert(Resource entity, bool multipart = false)
-        {
-            return await _client.Request<Resource, Resource>(ApiPath, HttpMethod.Post, entity, multipart);
-        }
-
-        public async Task<Resource> Update(string id, Resource entity, bool multipart = false)
-        {
-            return await _client.Update(ApiPath, id, entity, multipart);
-        }
     }
 }
