@@ -14,13 +14,9 @@
     </RadzenScheduler>
 </div>
 
-<a href="/resources/@ShareId/edit">
-    <RadzenButton ButtonType="ButtonType.Button" Text="Edit calendar" Style="margin : 1em 1em 1em 1em"/>
-</a>
-
+<RadzenButton ButtonType="ButtonType.Button" Text="Edit calendar" Style="margin:1em 1em 1em 1em" Click=NavigateEdit/>
 
 @code {
-
     [Parameter]
     public string ShareId { get; set; }
 
@@ -42,11 +38,10 @@
 
     IList<DataItem> bookings = new List<DataItem>();
 
-    private void Edit()
+    private void NavigateEdit()
     {
-        navigationManager.NavigateTo("/resources/" + ShareId + "/edit");
+        navigationManager.NavigateTo($"/resources/{ShareId}/edit");
     }
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -89,8 +84,6 @@
     async Task OnEventSelect(SchedulerAppointmentSelectEventArgs<DataItem> args)
     {
         DataItem data = await DialogService.OpenAsync<ShowEventPage>("Show Event", new Dictionary<string, object> { { "Event", args.Data } });
-
-
 
         if (data != null)
         {

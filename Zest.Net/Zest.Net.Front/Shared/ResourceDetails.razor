@@ -45,12 +45,13 @@
                             </div>
 
                             <button type="submit" class="btn btn-outline-success mt-3">@(resource.Id==0? "Create" : "Update")</button>
-                            @if (resource.Id != 0 && client.CurrentUser.Id == resource.Author.Id)
-                            {
-                                <button class="btn btn-outline-danger ml-2 mt-3 pull-right" @onclick="DeleteResource">Delete</button>
-                            }
 
                         </EditForm>
+
+                        @if (resource.Id != 0 && client.CurrentUser.Id == resource.Author.Id)
+                        {
+                            <button class="btn btn-outline-danger ml-2 mt-3 " @onclick="DeleteResource">Delete</button>
+                        }
                     </div>
                 </div>
             </div>
