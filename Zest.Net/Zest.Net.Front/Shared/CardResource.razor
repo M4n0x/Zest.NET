@@ -1,0 +1,25 @@
+﻿@inject NavigationManager UriHelper
+
+<div class="card mb-3">
+    @if (!String.IsNullOrEmpty(resource.Picture))
+    {
+        <img src="@($"https://zest.srvz-webapp.he-arc.ch/{resource.Picture}")" class="card-img-top" alt="...">
+    }
+
+    <div class="card-body">
+        <h5 class="card-title">@resource.Name</h5>
+        <p class="card-text">@resource.Description </p>
+        <RadzenButton Click=@Navigate ButtonStyle="ButtonStyle.Secondary">See more</RadzenButton>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public Resource resource { set; get; }
+
+    public void Navigate()
+    {
+        UriHelper.NavigateTo($"/calendars/{resource.ShareId}");
+    }
+}

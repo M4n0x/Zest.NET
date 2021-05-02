@@ -1,0 +1,20 @@
+﻿@page "/resources/{shareId}/edit"
+@inject ResourcesHttpRepository repo
+
+<ResourceDetails resource="@resource" />
+
+@code {
+    [Parameter]
+    public string ShareId { get; set; }
+
+    private Resource resource = new Resource();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+
+        var data = await repo.GetById(ShareId);
+
+        resource = data;
+    }
+}
