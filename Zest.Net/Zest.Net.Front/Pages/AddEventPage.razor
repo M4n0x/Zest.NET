@@ -2,15 +2,6 @@
 
 <RadzenTemplateForm TItem="DataItem" Data="@model" Submit=@OnSubmit>
     <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3"s>
-            <RadzenLabel Text="Text" />
-        </div>
-        <div class="col">
-            <RadzenTextBox @bind-Value="@model.Text" Name="Text" />
-            <RadzenRequiredValidator Text="Title is required" Component="Text" />
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 16px">
         <div class="col-md-3">
             <RadzenLabel Text="Start date" />
         </div>

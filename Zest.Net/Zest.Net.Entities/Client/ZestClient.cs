@@ -113,7 +113,7 @@ namespace Zest.Net.Entities.Client
         /// <param name="method">Http method</param>
         /// <param name="body">Body content</param>
         /// <returns>Api response</returns>
-        public async Task<TResponse> Request<TResponse, TBody>(string url, HttpMethod method, TBody body = null, bool multipart=false) where TBody : class
+        public async Task<TResponse> Request<TResponse, TBody>(string url, HttpMethod method, TBody body = null) where TBody : class
         {
             var request = new HttpRequestMessage(method, $"{Http.BaseAddress}{url}");
 
@@ -121,13 +121,19 @@ namespace Zest.Net.Entities.Client
 
             if (body != null)
             {
-                    request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
-            } 
+                request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+            }
 
             using var httpResponse = await Http.SendAsync(request);
 
-
-            return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
+            if (method != HttpMethod.Delete)
+            {
+                return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
+            }
+            else
+            {
+                return default;
+            }
         }
 
         public async Task<TResponse> RequestMultipart<TResponse, TBody>(string url, HttpMethod method, MultipartFormDataContent content) where TBody : class
@@ -140,7 +146,16 @@ namespace Zest.Net.Entities.Client
 
             using var httpResponse = await Http.SendAsync(request);
 
-            return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
+            if(method != HttpMethod.Delete)
+            {
+                return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
+            }
+            else
+            {
+                return default;
+            }
+
+            
         }
 
         /// <summary>
@@ -150,7 +165,7 @@ namespace Zest.Net.Entities.Client
         /// <param name="url">url</param>
         /// <param name="method">Http method</param>
         /// <returns>Api response</returns>
-        private async Task<TResponse> Request<TResponse>(string url, HttpMethod method)
+        public async Task<TResponse> Request<TResponse>(string url, HttpMethod method)
         {
             return await Request<TResponse, object>(url, method, null);
         }
@@ -164,6 +179,17 @@ namespace Zest.Net.Entities.Client
         public async Task<IEnumerable<TEntity>> Get<TEntity>(string url)
         {
             return await Request<IEnumerable<TEntity>, object>(url, HttpMethod.Get);
+        }
+
+        /// <summary>
+        /// Get entities
+        /// </summary>
+        /// <typeparam name="TEntity">Entity type</typeparam>
+        /// <param name="url">url</param>
+        /// <returns>Api response</returns>
+        public async Task<TEntity> GetSingle<TEntity>(string url)
+        {
+            return await Request<TEntity, object>(url, HttpMethod.Get);
         }
 
         /// <summary>
@@ -197,11 +223,13 @@ namespace Zest.Net.Entities.Client
         /// <param name="url">url</param>
         /// <param name="data">entity to insert</param>
         /// <returns>Api response</returns>
-        public async Task<TEntity> Insert<TEntity>(string url, TEntity data, bool multipart = false)
-        {
-            return await Request<TEntity, object>(url, HttpMethod.Post, data, multipart);
-        }
 
+        public async Task<TEntity> Insert<TEntity>(string url, TEntity data)
+
+        {
+            return await Request<TEntity, object>(url, HttpMethod.Post, data);
+        }
+        
         /// <summary>
         /// Update entity
         /// </summary>
@@ -210,14 +238,14 @@ namespace Zest.Net.Entities.Client
         /// <param name="id">Entity id</param>
         /// <param name="data">Data to update entity</param>
         /// <returns>Api response</returns>
-        public async Task<TEntity> Update<TEntity>(string url, int id, TEntity data, bool multipart = false)
+        public async Task<TEntity> Update<TEntity>(string url, int id, TEntity data)
         {
-            return await Request<TEntity, object>($"{url}/{id}", HttpMethod.Post, data, multipart);
+            return await Request<TEntity, object>($"{url}/{id}", HttpMethod.Post, data);
         }
 
-        public async Task<TEntity> Update<TEntity>(string url, string id, TEntity data, bool multipart = false)
+        public async Task<TEntity> Update<TEntity>(string url, string id, TEntity data)
         {
-            return await Request<TEntity, object>($"{url}/{id}", HttpMethod.Post, data, multipart);
+            return await Request<TEntity, object>($"{url}/{id}", HttpMethod.Post, data);
         }
 
         /// <summary>
@@ -227,9 +255,9 @@ namespace Zest.Net.Entities.Client
         /// <param name="url">url</param>
         /// <param name="id">Entity id to delete</param>
         /// <returns>Api response</returns>
-        public async Task Delete<TEntity>(string url, int id)
+        public async Task Delete(string url, int id)
         {
-            await Request<object, object>($"{url}/{id}", HttpMethod.Post);
+            await Request<object, object>($"{url}/{id}", HttpMethod.Delete);
         }
 
         public async Task Delete<TEntity>(string url, string id)

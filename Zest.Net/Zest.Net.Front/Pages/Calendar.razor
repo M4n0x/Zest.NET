@@ -1,4 +1,5 @@
-﻿@page "/calendar"
+﻿@page "/calendars/{shareId}"
+@using System.Linq;
 @inject Radzen.DialogService DialogService
 
 <h1>Calendar</h1>
@@ -6,61 +7,97 @@
 <div class="col-xl-6">
     <RadzenScheduler @ref=@calendar style="height: 700px;" TItem="DataItem" Data=@bookings StartProperty="Start" EndProperty="End"
                      TextProperty="Text" SelectedIndex="2"
-                     SlotSelect=@OnSlotSelect AppointmentSelect=@OnEventSelect AppointmentRender=@OnEventRender>
+                     SlotSelect=@OnSlotSelect AppointmentSelect=@OnEventSelect>
         <RadzenDayView />
         <RadzenWeekView />
         <RadzenMonthView />
     </RadzenScheduler>
 </div>
 
+<a href="/resources/@ShareId/edit">
+    <RadzenButton ButtonType="ButtonType.Button" Text="Edit calendar" Style="margin : 1em 1em 1em 1em"/>
+</a>
+
 
 @code {
 
-    
+    [Parameter]
+    public string ShareId { get; set; }
+
+    [Inject]
+    NavigationManager navigationManager { get; set; }
+
+    [Inject]
+    public ResourcesHttpRepository resourcesRepository { get; set; }
+
+    [Inject]
+    public ZestClient client { get; set; }
+
+    public string Title { get; set; }
 
     RadzenScheduler<DataItem> calendar;
     Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
 
-    IList<DataItem> bookings = new List<DataItem>
-{
-        new DataItem { Start = DateTime.Today.AddDays(-2), End = DateTime.Today.AddDays(-2), Text = "Birthday" },
-        new DataItem { Start = DateTime.Today.AddDays(-11), End = DateTime.Today.AddDays(-10), Text = "Day off" },
-        new DataItem { Start = DateTime.Today.AddDays(-10), End = DateTime.Today.AddDays(-8), Text = "Work from home" },
-        new DataItem { Start = DateTime.Today.AddHours(10), End = DateTime.Today.AddHours(12), Text = "Online meeting" },
-        new DataItem { Start = DateTime.Today.AddHours(10), End = DateTime.Today.AddHours(13), Text = "Skype call" },
-        new DataItem { Start = DateTime.Today.AddHours(14), End = DateTime.Today.AddHours(14).AddMinutes(30), Text = "Dentist appointment" },
-        new DataItem { Start = DateTime.Today.AddDays(1), End = DateTime.Today.AddDays(12), Text = "Vacation" },
-    };
+    IList<Booking> resourcesList;
+
+    IList<DataItem> bookings = new List<DataItem>();
+
+    private void Edit()
+    {
+        navigationManager.NavigateTo("/resources/" + ShareId + "/edit");
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await resourcesRepository.GetBookings(ShareId);
+
+        resourcesList = data.Bookings.ToList();
+
+        foreach (var r in resourcesList)
+        {
+            DataItem di = new DataItem { Id = r.Id, Start = Convert.ToDateTime(r.DateStart).AddHours(-2), End = Convert.ToDateTime(r.DateEnd).AddHours(-2), Text = r.User.Username };
+
+            bookings.Add(di);
+        }
+        await calendar.Reload();
+    }
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
-
         DataItem data = await DialogService.OpenAsync<AddEventPage>("Add Appointment",
-            new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+            new Dictionary<string, object> { { "Start", args.Start }, { "End", (args.End.AddSeconds(-1.0)) }});
 
         if (data != null)
         {
+            data.Text = client.CurrentUser.Username;
+
             bookings.Add(data);
-            // Either call the Reload method or reassign the Data property of the Scheduler
+
             await calendar.Reload();
+
+            Booking b = new Booking();
+
+            b.DateStart = data.Start.ToString("yyyy-MM-ddTHH:mm:ss");
+            b.DateEnd = data.End.ToString("yyyy-MM-ddTHH:mm:ss");
+            b.User = client.CurrentUser;
+
+            var bo = await resourcesRepository.PostBooking(ShareId, b);
         }
     }
 
     async Task OnEventSelect(SchedulerAppointmentSelectEventArgs<DataItem> args)
     {
-        await DialogService.OpenAsync<EditEventPage>("Edit event", new Dictionary<string, object> { { "Event", args.Data } });
+        DataItem data = await DialogService.OpenAsync<ShowEventPage>("Show Event", new Dictionary<string, object> { { "Event", args.Data } });
 
-        Console.WriteLine("Coucou");
 
-        await calendar.Reload();
-    }
 
-    void OnEventRender(SchedulerAppointmentRenderEventArgs<DataItem> args)
-    {
-        if (args.Data.Text == "Birthday")
+        if (data != null)
         {
-            args.Attributes["style"] = "background: red";
+            bookings.Remove(data);
+            await resourcesRepository.DeleteBooking(ShareId, data.Id);
+
+            await calendar.Reload();
         }
     }
-
 }

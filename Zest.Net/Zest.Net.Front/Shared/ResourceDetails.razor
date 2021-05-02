@@ -1,7 +1,6 @@
 ﻿@inject ResourcesHttpRepository repo
 @inject NavigationManager UriHelper
 @inject ZestClient client
-@using System.IO
 
 <div class="row-fluid">
     <div class="col-12">
@@ -59,12 +58,13 @@
     </div>
 </div>
 
-@code { DateTime? value = DateTime.Now;
+@code { 
     [Parameter]
     public Resource resource { set; get; }
+
     public string image;
     public IBrowserFile file = null;
-
+    DateTime? value = DateTime.Now;
 
     private DateTime? startDate = (DateTime.Now);
     private DateTime? endDate = null;
@@ -101,7 +101,7 @@
             resource.DateEnd = endDate?.ToString(DATE_FORMAT_EXPORT);
 
             var formContent = new MultipartFormDataContent
-        {
+    {
                 // Send form text values here
                 {new StringContent(resource.Name), "name"},
                 {new StringContent(resource.Description),"description" },

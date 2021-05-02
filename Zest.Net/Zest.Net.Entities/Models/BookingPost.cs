@@ -8,12 +8,9 @@ namespace Zest.Net.Entities.Models
     /// <summary>
     /// Resource Booking class
     /// </summary>
-    public class Booking
+    public class BookingPost
     {
-        /// <summary>
-        /// Booking Id
-        /// </summary>
-        public int Id { get; set; }
+
 
         /// <summary>
         /// Resource date start
@@ -28,7 +25,10 @@ namespace Zest.Net.Entities.Models
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string DateEnd { get; set; }
 
-
-        public User User { get; set; }
+        /// <summary>
+        /// User id
+        /// </summary>
+        [JsonPropertyName("user")]
+        public int User { get; set; }
     }
 }

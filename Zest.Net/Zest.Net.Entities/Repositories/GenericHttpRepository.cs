@@ -43,6 +43,15 @@ namespace Zest.Net.Entities.Repositories
         }
 
         /// <summary>
+        /// Get entities
+        /// </summary>
+        /// <returns>Api response</returns>
+        public virtual async Task<TEntity> GetSingle()
+        {
+            return await _client.GetSingle<TEntity>(ApiPath);
+        }
+
+        /// <summary>
         /// Get entity by id
         /// </summary>
         /// <param name="id">Entity id to get</param>
@@ -67,9 +76,9 @@ namespace Zest.Net.Entities.Repositories
         /// </summary>
         /// <param name="entity">entity to insert</param>
         /// <returns>Api response</returns>
-        public async Task<TEntity> Insert(TEntity entity)
+        public async Task Insert(TEntity entity)
         {
-            return await _client.Insert(ApiPath, entity);
+            await _client.Insert(ApiPath, entity);
         }
 
         /// <summary>
@@ -78,9 +87,9 @@ namespace Zest.Net.Entities.Repositories
         /// <param name="id">Entity id to update</param>
         /// <param name="entity">Entity data</param>
         /// <returns>Api response</returns>
-        public async Task<TEntity> Update(int id, TEntity entity)
+        public async Task Update(int id, TEntity entity)
         {
-            return await _client.Update(ApiPath, id, entity);
+            await _client.Update(ApiPath, id, entity);
         }
 
         public async Task Update(string id, TEntity entity)
@@ -96,7 +105,7 @@ namespace Zest.Net.Entities.Repositories
         
         public async Task Delete(int id)
         {
-            await _client.Delete<TEntity>(ApiPath, id);
+            await _client.Delete(ApiPath, id);
         }
 
         public async Task Delete(string id)

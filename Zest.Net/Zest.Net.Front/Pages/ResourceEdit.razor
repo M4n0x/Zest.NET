@@ -13,8 +13,6 @@
     {
         base.OnInitialized();
 
-        Console.WriteLine(ShareId);
-
         var data = await repo.GetById(ShareId);
 
         resource = data;

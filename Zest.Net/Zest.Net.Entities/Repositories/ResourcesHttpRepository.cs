@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Zest.Net.Entities.Client;
@@ -6,6 +8,14 @@ using Zest.Net.Entities.Models;
 
 namespace Zest.Net.Entities.Repositories
 {
+    public class BookingsGet
+    {
+        public int Id { get; set; }
+        public IEnumerable<Booking> Bookings { get; set; }
+        public User Author { get; set; }
+
+    }
+
     /// <summary>
     /// Resources Http repository
     /// </summary>
@@ -32,9 +42,9 @@ namespace Zest.Net.Entities.Repositories
         /// </summary>
         /// <param name="shareId">Resource shareId</param>
         /// <returns>Api response with Resource and its bookings</returns>
-        public async Task<IEnumerable<Resource>> GetBookings(string shareId)
+        public async Task<BookingsGet> GetBookings(string shareId)
         {
-            return await _client.Get<Resource>(BookingApiPath(shareId));
+            return await _client.GetSingle<BookingsGet>(BookingApiPath(shareId));
         }
 
         /// <summary>
@@ -43,9 +53,17 @@ namespace Zest.Net.Entities.Repositories
         /// <param name="shareId">Resource shareId</param>
         /// <param name="booking">Booking to create</param>
         /// <returns>Task</returns>
-        public async Task<Booking> PostBooking(string shareId, Booking booking)
+        
+        public async Task<BookingPostResponse> PostBooking(string shareId, Booking booking)
         {
-            return await _client.Insert($"{BookingApiPath(shareId)}/bookings", booking);
+            BookingPost bp = new BookingPost
+            {
+                DateStart = booking.DateStart,
+                DateEnd = booking.DateEnd,
+                User = booking.User.Id
+            };
+
+             return await _client.Request<BookingPostResponse, BookingPost>($"{BookingApiPath(shareId)}/bookings", HttpMethod.Post, bp);
         }
 
         /// <summary>
@@ -56,17 +74,8 @@ namespace Zest.Net.Entities.Repositories
         /// <returns>Task</returns>
         public async Task DeleteBooking(string shareId, int id)
         {
-            await _client.Delete<Booking>($"{BookingApiPath(shareId)}/bookings", id);
+            await _client.Delete($"{BookingApiPath(shareId)}/bookings", id);
         }
 
-        public async Task<Resource> Insert(Resource entity, bool multipart = false)
-        {
-            return await _client.Request<Resource, Resource>(ApiPath, HttpMethod.Post, entity, multipart);
-        }
-
-        public async Task<Resource> Update(string id, Resource entity, bool multipart = false)
-        {
-            return await _client.Update(ApiPath, id, entity, multipart);
-        }
     }
 }
