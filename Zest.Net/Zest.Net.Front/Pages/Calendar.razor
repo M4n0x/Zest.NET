@@ -1,4 +1,4 @@
-﻿@page "/Calendars/{shareId}"
+﻿@page "/calendars/{shareId}"
 @using System.Linq;
 @inject Radzen.DialogService DialogService
 
@@ -14,6 +14,10 @@
     </RadzenScheduler>
 </div>
 
+<a href="/resources/@ShareId/edit">
+    <RadzenButton ButtonType="ButtonType.Button" Text="Edit calendar" Style="margin : 1em 1em 1em 1em"/>
+</a>
+
 
 @code {
 
@@ -21,10 +25,15 @@
     public string ShareId { get; set; }
 
     [Inject]
+    NavigationManager navigationManager { get; set; }
+
+    [Inject]
     public ResourcesHttpRepository resourcesRepository { get; set; }
 
     [Inject]
     public ZestClient client { get; set; }
+
+    public string Title { get; set; }
 
     RadzenScheduler<DataItem> calendar;
     Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
@@ -33,30 +42,31 @@
 
     IList<DataItem> bookings = new List<DataItem>();
 
+    private void Edit()
+    {
+        navigationManager.NavigateTo("/resources/" + ShareId + "/edit");
+    }
+
+
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine(ShareId);
-
         var data = await resourcesRepository.GetBookings(ShareId);
 
         resourcesList = data.Bookings.ToList();
 
         foreach (var r in resourcesList)
         {
-            DataItem di = new DataItem { Id = r.Id, Start = Convert.ToDateTime(r.DateStart), End = Convert.ToDateTime(r.DateEnd), Text = r.User.Username };
+            DataItem di = new DataItem { Id = r.Id, Start = Convert.ToDateTime(r.DateStart).AddHours(-2), End = Convert.ToDateTime(r.DateEnd).AddHours(-2), Text = r.User.Username };
 
             bookings.Add(di);
         }
-
         await calendar.Reload();
     }
 
     async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
     {
         DataItem data = await DialogService.OpenAsync<AddEventPage>("Add Appointment",
-            new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End }});
-
-
+            new Dictionary<string, object> { { "Start", args.Start }, { "End", (args.End.AddSeconds(-1.0)) }});
 
         if (data != null)
         {

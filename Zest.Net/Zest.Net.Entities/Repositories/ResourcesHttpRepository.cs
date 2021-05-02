@@ -74,7 +74,6 @@ namespace Zest.Net.Entities.Repositories
         /// <returns>Task</returns>
         public async Task DeleteBooking(string shareId, int id)
         {
-            //BUG ????
             await _client.Delete($"{BookingApiPath(shareId)}/bookings", id);
         }
 
