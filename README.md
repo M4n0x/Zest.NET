@@ -13,7 +13,7 @@ This project is developed with :
 - Django for the API
 - Blazor for the WebApp
 
-Pour plus d'informations sur le projet voir la page [wiki](/wiki)
+Pour plus d'informations sur le projet voir la page [wiki](https://github.com/M4n0x/Zest.NET/wiki)
 
 ## Members
 
