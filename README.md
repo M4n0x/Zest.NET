@@ -13,6 +13,8 @@ This project is developed with :
 - Django for the API
 - Blazor for the WebApp
 
+Pour plus d'informations sur le projet voir la page [wiki](/wiki)
+
 ## Members
 
 <table>
