@@ -2,19 +2,38 @@
 @using System.Linq;
 @inject Radzen.DialogService DialogService
 
-<h1>Calendar</h1>
+<h1>Calendar for: @Title</h1>
 
-<div class="col-xl-6">
-    <RadzenScheduler @ref=@calendar style="height: 700px;" TItem="DataItem" Data=@bookings StartProperty="Start" EndProperty="End"
-                     TextProperty="Text" SelectedIndex="2"
-                     SlotSelect=@OnSlotSelect AppointmentSelect=@OnEventSelect>
-        <RadzenDayView />
-        <RadzenWeekView />
-        <RadzenMonthView />
-    </RadzenScheduler>
+<div class="row">
+    <div class="col-xl-8">
+        <RadzenScheduler @ref=@calendar style="height: 700px;" TItem="DataItem" Data=@bookings StartProperty="Start" EndProperty="End"
+                         TextProperty="Text" SelectedIndex="2"
+                         SlotSelect=@OnSlotSelect AppointmentSelect=@OnEventSelect>
+            <RadzenDayView />
+            <RadzenWeekView />
+            <RadzenMonthView />
+        </RadzenScheduler>
+    </div>
+
+    <div class="col-xl-4">
+        <RadzenFieldset Style="width:500px;margin-bottom: 20px;">
+            <HeaderTemplate>
+                <span>
+                    <b style="font-size:30px">Informations</b>
+                </span>
+            </HeaderTemplate>
+            <ChildContent>
+                <RadzenImage Path="@ResourceImagePath" Style="width:450px"></RadzenImage>
+                <h3>Description</h3>
+                <p>@Description</p>
+
+            </ChildContent>
+        </RadzenFieldset>
+    </div>
 </div>
 
-<RadzenButton ButtonType="ButtonType.Button" Text="Edit calendar" Style="margin:1em 1em 1em 1em" Click=NavigateEdit/>
+
+<RadzenButton ButtonType="ButtonType.Button" Disabled="@(CurrentUserId != ResourceUserId)" Text="Edit calendar" Style="margin:1em 1em 1em 1em" Click=NavigateEdit/>
 
 @code {
     [Parameter]
@@ -31,6 +50,14 @@
 
     public string Title { get; set; }
 
+    public int CurrentUserId { get; set; }
+
+    public int ResourceUserId { get; set; }
+
+    public string ResourceImagePath { get; set; }
+
+    public string Description { get; set; }
+
     RadzenScheduler<DataItem> calendar;
     Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
 
@@ -46,6 +73,16 @@
     protected override async Task OnInitializedAsync()
     {
         var data = await resourcesRepository.GetBookings(ShareId);
+
+        var res = await resourcesRepository.GetById(ShareId);
+
+        Title = res.Name;
+
+        CurrentUserId = client.CurrentUser.Id;
+        ResourceUserId = res.Author.Id;
+        ResourceImagePath = res.Picture;
+        Description = res.Description;
+
 
         resourcesList = data.Bookings.ToList();
 
